@@ -1,0 +1,12 @@
+apiVersion: v2
+appVersion: "1.0"
+description: A Helm chart for mytime-api App
+name: mytime-api
+home: https://github.com/hmcts/mytime-api
+version: 0.0.1
+maintainers:
+  - name: HMCTS mytime team
+dependencies:
+  - name: java
+    version: 4.0.1
+    repository: '@hmctspublic'

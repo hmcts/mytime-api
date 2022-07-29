@@ -1,0 +1,12 @@
+java:
+  applicationPort: 4000
+  image: 'hmctspublic.azurecr.io/mytime/api:latest'
+  ingressHost: mytime-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  aadIdentityName: mytime
+#  Uncomment once the vault containing the app insights key has been set up
+#  keyVaults:
+#    mytime:
+#      secrets:
+#        - name: AppInsightsInstrumentationKey
+#          alias: azure.application-insights.instrumentation-key
+  environment:
