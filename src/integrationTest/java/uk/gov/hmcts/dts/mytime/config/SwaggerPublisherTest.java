@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.mytime.config;
+package uk.gov.hmcts.dts.mytime.config;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

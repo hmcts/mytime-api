@@ -10,7 +10,7 @@ plugins {
   id 'org.sonarqube' version '3.3'
 }
 
-group = 'uk.gov.hmcts.reform'
+group = 'uk.gov.hmcts.dts'
 version = '0.0.1'
 
 java {
@@ -208,7 +208,7 @@ dependencies {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.reform.mytime.Application'
+mainClassName = 'uk.gov.hmcts.dts.mytime.Application'
 
 bootJar {
   archiveFileName = "mytime-api.jar"
@@ -219,6 +219,14 @@ bootJar {
 }
 
 // Gradle 7.x issue, workaround from: https://github.com/gradle/gradle/issues/17236#issuecomment-894768083
+rootProject.tasks.named("processIntegrationTestResources") {
+  duplicatesStrategy = 'include'
+}
+
+rootProject.tasks.named("processFunctionalTestResources") {
+  duplicatesStrategy = 'include'
+}
+
 rootProject.tasks.named("processSmokeTestResources") {
   duplicatesStrategy = 'include'
 }

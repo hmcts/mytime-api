@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.mytime.controllers;
+package uk.gov.hmcts.dts.mytime.controllers;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

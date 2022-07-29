@@ -1,4 +1,4 @@
-package uk.gov.hmcts.reform.mytime;
+package uk.gov.hmcts.dts.mytime;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
