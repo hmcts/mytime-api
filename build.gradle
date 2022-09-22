@@ -130,8 +130,8 @@ project.tasks['check'].dependsOn integration
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: mytime-api"
-    property "sonar.projectKey", "uk.gov.hmcts.reform:mytime-api"
+    property "sonar.projectName", "Reform :: my-time-api"
+    property "sonar.projectKey", "uk.gov.hmcts.reform:my-time-api"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
   }
 }
@@ -208,10 +208,10 @@ dependencies {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.dts.mytime.Application'
+mainClassName = 'uk.gov.hmcts.dts.my-time.Application'
 
 bootJar {
-  archiveFileName = "mytime-api.jar"
+  archiveFileName = "my-time-api.jar"
 
   manifest {
     attributes('Implementation-Version': project.version.toString())

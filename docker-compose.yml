@@ -1,7 +1,7 @@
 version: '2.1'
 
 services:
-  mytime-api:
+  my-time-api:
     build:
       context: .
       args:

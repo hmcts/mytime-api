@@ -12,14 +12,14 @@ management:
         include: health, info, prometheus
 
 springdoc:
-  packagesToScan: uk.gov.hmcts.dts.mytime.controllers
+  packagesToScan: uk.gov.hmcts.dts.my-time.controllers
 
 #If you use a database then uncomment below lines and update db properties accordingly
 spring:
   config:
-    import: "optional:configtree:/mnt/secrets/mytime/"
+    import: "optional:configtree:/mnt/secrets/my-time/"
   application:
-    name: myTime API
+    name: my-time API
 #  datasource:
 #    driver-class-name: org.postgresql.Driver
 #    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}${DB_OPTIONS:}
@@ -44,4 +44,4 @@ spring:
 
 azure:
   application-insights:
-    instrumentation-key: ${mytime.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
+    instrumentation-key: ${my-time.AppInsightsInstrumentationKey:00000000-0000-0000-0000-000000000000}
