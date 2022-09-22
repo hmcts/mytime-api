@@ -130,7 +130,7 @@ project.tasks['check'].dependsOn integration
 
 sonarqube {
   properties {
-    property "sonar.projectName", "Reform :: my-time-api"
+    property "sonar.projectName", "my-time :: api"
     property "sonar.projectKey", "uk.gov.hmcts.reform:my-time-api"
     property "sonar.coverage.jacoco.xmlReportPaths", "${jacocoTestReport.reports.xml.destination.path}"
   }
