@@ -8,5 +8,25 @@ def component = "api"
 
 withPipeline(type, product, component) {
 
+  onMaster() {
+    env.ENV = 'stg'
+  }
+  onPR() {
+    env.ENV = 'dev'
+  }
+  onDemo {
+    env.ENV = 'demo'
+  }
+  onPerftest {
+    env.ENV = 'perftest'
+  }
+  onIthc {
+    env.ENV = 'ithc'
+  }
+
   enableSlackNotifications('#my-time-builds')
+  enableAksStagingDeployment()
+  disableLegacyDeployment()
+  enableApiGatewayTest()
+
 }
