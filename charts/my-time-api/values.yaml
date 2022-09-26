@@ -1,7 +1,7 @@
 java:
   applicationPort: 4000
   image: 'hmctspublic.azurecr.io/my-time/api:latest'
-  ingressHost: my-time-api-{{ .Values.global.environment }}.service.core-compute-{{ .Values.global.environment }}.internal
+  ingressHost: my-time-api.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: my-time
   keyVaults:
     my-time:
