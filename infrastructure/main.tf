@@ -47,31 +47,31 @@ module "my-time-database-v11" {
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
   name      = "api-POSTGRES-USER"
   value     = module.my-time-database-v11.user_name
-  key_vault_id = data.azurerm_key_vault.my-time_key_vault.id
+  key_vault_id = data.azurerm_key_vault.my_time_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-PASS" {
   name      = "api-POSTGRES-PASS"
   value     = module.my-time-database-v11.postgresql_password
-  key_vault_id = data.azurerm_key_vault.my-time_key_vault.id
+  key_vault_id = data.azurerm_key_vault.my_time_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_HOST" {
   name      = "api-POSTGRES-HOST"
   value     = module.my-time-database-v11.host_name
-  key_vault_id = data.azurerm_key_vault.my-time_key_vault.id
+  key_vault_id = data.azurerm_key_vault.my_time_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_PORT" {
   name      = "api-POSTGRES-PORT"
   value     = module.my-time-database-v11.postgresql_listen_port
-  key_vault_id = data.azurerm_key_vault.my-time_key_vault.id
+  key_vault_id = data.azurerm_key_vault.my_time_key_vault.id
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES_DATABASE" {
   name      = "api-POSTGRES-DATABASE"
   value     = module.my-time-database-v11.postgresql_database
-  key_vault_id = data.azurerm_key_vault.my-time_key_vault.id
+  key_vault_id = data.azurerm_key_vault.my_time_key_vault.id
 }
 
 resource "azurerm_resource_group" "rg" {
