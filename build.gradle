@@ -208,7 +208,7 @@ dependencies {
   }
 }
 
-mainClassName = 'uk.gov.hmcts.dts.my-time.Application'
+mainClassName = 'uk.gov.hmcts.dts.mytime.Application'
 
 bootJar {
   archiveFileName = "my-time-api.jar"
