@@ -24,3 +24,16 @@ services:
       - LOGBACK_REQUIRE_ERROR_CODE=false
     ports:
       - $SERVER_PORT:$SERVER_PORT
+  my-time-database:
+    build:
+      context: docker/database
+    environment:
+      POSTGRES_DB: javadatabase
+      POSTGRES_USER: javapostgres
+      POSTGRES_PASSWORD: javapassword
+    ports:
+      - 5432:5432
+    volumes:
+      - my-time-database:/var/lib/postgresql/data
+volumes:
+  my-time-database:
