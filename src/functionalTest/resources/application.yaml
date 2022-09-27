@@ -5,7 +5,7 @@ spring:
 #    username: javapostgres
 #    password: javapassword
   config:
-    import: optional:configtree:/mnt/secrets/rpts/
+    import: optional:configtree:/mnt/secrets/my-time/
 
 server:
   port: 4001
