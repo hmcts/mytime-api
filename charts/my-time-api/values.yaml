@@ -4,8 +4,9 @@ java:
   ingressHost: my-time-api.{{ .Values.global.environment }}.platform.hmcts.net
   aadIdentityName: my-time
   keyVaults:
-    my-time:
+    "my-time":
+      resourceGroup: my-time
       secrets:
-        - name: AppInsightsInstrumentationKey
-          alias: azure.application-insights.instrumentation-key
+        - name: app-insights-connection-string
+          alias: app-insights-connection-string
   environment:
