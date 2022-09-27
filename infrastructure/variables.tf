@@ -30,7 +30,7 @@ variable "postgresql_version" {
 
 variable "postgresql_user" {
   type    = string
-  default = "my-time"
+  default = "mytime"
 }
 
 variable "team_name" {
