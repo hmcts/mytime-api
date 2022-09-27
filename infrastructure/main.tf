@@ -42,6 +42,9 @@ module "my-time-database-v11" {
   common_tags = var.common_tags
   subscription = var.subscription
   postgresql_version = var.postgresql_version
+  business_area = "SDS"
+  key_vault_rg   = "genesis-rg"
+  key_vault_name = "dtssharedservices${var.env}kv"
 }
 
 resource "azurerm_key_vault_secret" "POSTGRES-USER" {
