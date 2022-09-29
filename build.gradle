@@ -210,7 +210,7 @@ dependencies {
 
   runtimeOnly 'org.postgresql:postgresql:42.4.1'
 
-  testImplementation(platform('org.junit:junit-bom:5.8.2'))
+  testImplementation(platform('org.junit:junit-bom:5.9.1'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
