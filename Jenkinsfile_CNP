@@ -24,6 +24,7 @@ withPipeline(type, product, component) {
     env.ENV = 'ithc'
   }
 
+  enableDbMigration(product)
   enableSlackNotifications('#my-time-builds')
   enableAksStagingDeployment()
   disableLegacyDeployment()
