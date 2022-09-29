@@ -20,24 +20,32 @@ spring:
     import: "optional:configtree:/mnt/secrets/my-time/"
   application:
     name: my-time API
-#  datasource:
-#    driver-class-name: org.postgresql.Driver
-#    url: jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_NAME}${DB_OPTIONS:}
-#    username: ${DB_USER_NAME}
-#    password: ${DB_PASSWORD}
-#    properties:
-#      charSet: UTF-8
-#    hikari:
-#      minimumIdle: 2
-#      maximumPoolSize: 10
-#      idleTimeout: 10000
-#      poolName: {to-be-defined}HikariCP
-#      maxLifetime: 7200000
-#      connectionTimeout: 30000
-#  jpa:
-#    properties:
-#      hibernate:
-#        jdbc:
-#          lob:
-#            # silence the 'wall-of-text' - unnecessary exception throw about blob types
-#            non_contextual_creation: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    url: jdbc:postgresql://${POSTGRES_HOST:localhost}:${POSTGRES_PORT:5432}/${POSTGRES_DATABASE:javadatabase}${DB_OPTIONS:}
+    username: ${POSTGRES_USERNAME:javapostgres}
+    password: ${POSTGRES_PASSWORD:javapassword}
+    properties:
+      charSet: UTF-8
+    hikari:
+      minimumIdle: 2
+      maximumPoolSize: 10
+      idleTimeout: 10000
+      poolName: MyTimeHikariCP
+      maxLifetime: 7200000
+      connectionTimeout: 30000
+  jpa:
+    properties:
+      hibernate:
+        globally_quoted_identifiers: true
+        jdbc:
+          lob:
+            non_contextual_creation: true
+
+hibernate:
+  show_sql=true:
+
+dbMigration:
+  # When true, the app will run DB migration on startup.
+  # Otherwise, it will just check if all migrations have been applied (and fail to start if not).
+  runOnStartup: ${RUN_DB_MIGRATION_ON_STARTUP:true}
