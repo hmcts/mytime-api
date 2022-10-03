@@ -208,7 +208,7 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql'
   implementation group: 'org.flywaydb', name: 'flyway-core'
 
-  runtimeOnly 'org.postgresql:postgresql:42.4.1'
+  runtimeOnly 'org.postgresql:postgresql:42.5.0'
 
   testImplementation(platform('org.junit:junit-bom:5.8.2'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
