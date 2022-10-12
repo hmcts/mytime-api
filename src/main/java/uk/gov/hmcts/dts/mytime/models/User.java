@@ -1,4 +1,4 @@
-package uk.gov.hmcts.dts.mytime.Models;
+package uk.gov.hmcts.dts.mytime.models;
 
 import java.time.LocalDateTime;
 import lombok.AllArgsConstructor;
