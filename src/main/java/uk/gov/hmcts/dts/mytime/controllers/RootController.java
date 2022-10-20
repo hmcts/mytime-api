@@ -13,7 +13,7 @@ import static org.springframework.http.ResponseEntity.ok;
  */
 @RestController
 @RequestMapping(
-    path = "/User",
+    path = "/",
     produces = {MediaType.APPLICATION_JSON_VALUE}
 )
 public class RootController {

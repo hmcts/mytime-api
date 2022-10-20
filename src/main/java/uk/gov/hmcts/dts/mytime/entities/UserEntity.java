@@ -1,5 +1,7 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.Getter;
 
@@ -10,7 +12,9 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserEntity {
     @Id
     @GeneratedValue
     @Column(nullable = false)
