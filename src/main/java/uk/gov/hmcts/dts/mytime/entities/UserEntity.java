@@ -1,12 +1,16 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
 import lombok.AllArgsConstructor;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import lombok.Getter;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +22,7 @@ public class UserEntity {
     @Id
     @GeneratedValue
     @Column(nullable = false)
-    private int Id;
+    private int id;
 
     @Column(nullable = false)
     private String foreName;

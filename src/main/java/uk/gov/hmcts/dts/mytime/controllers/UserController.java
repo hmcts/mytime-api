@@ -23,23 +23,20 @@ public class UserController {
     private final UserService userService;
 
     @Autowired
-    public UserController(UserService userService)
-    {
+    public UserController(UserService userService) {
         this.userService = userService;
     }
 
     @GetMapping("/{id}")
     public ResponseEntity<UserModel> getUserById(@PathVariable int id) {
 
-        if (id == 0)
-        {
+        if (id == 0) {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
         }
 
         UserModel user = userService.getById(id);
 
-        if (user == null)
-        {
+        if (user == null) {
             return ResponseEntity.status(HttpStatus.NO_CONTENT).body(null);
         }
 
