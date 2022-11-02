@@ -19,7 +19,7 @@ public class UserModel {
 
     public UserModel(Optional<UserEntity> userEntity) {
         this.foreName = userEntity.get().getForeName();
-        this.surname = userEntity.get().getSureName();
+        this.surname = userEntity.get().getSurname();
         this.startDate = userEntity.get().getStartDate();
         this.contractHours = userEntity.get().getContractHours();
         this.bonusEntitlement = userEntity.get().getBonusEntitlement();

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -47,6 +48,14 @@ public class UserController {
         return ok(user);
     }
 
+    @GetMapping("/update")
+    public ResponseEntity<UserModel> updateUser(@RequestBody UserModel newUser){
 
+        if (newUser == null) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        return ok(userService.update(newUser));
+    }
 
 }

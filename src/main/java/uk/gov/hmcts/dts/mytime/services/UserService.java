@@ -8,6 +8,7 @@ import uk.gov.hmcts.dts.mytime.exceptions.NotFoundException;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
 
+import javax.transaction.Transactional;
 import java.util.Optional;
 
 @Service
@@ -32,5 +33,14 @@ public class UserService {
         log.debug("Returned from User table: {}", user);
 
         return user;
+    }
+
+    @Transactional
+    public UserModel update(UserModel newUserDetails) {
+
+        log.info("Updating user with {}", newUserDetails);
+
+        return new UserModel();
+
     }
 }
