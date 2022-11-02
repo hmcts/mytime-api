@@ -11,16 +11,14 @@ import org.springframework.web.util.NestedServletException;
 import uk.gov.hmcts.dts.mytime.controllers.UserController;
 import uk.gov.hmcts.dts.mytime.entities.UserEntity;
 import uk.gov.hmcts.dts.mytime.exceptions.NotFoundException;
+import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.services.UserService;
 
-import javax.validation.ConstraintViolationException;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 
-import static java.nio.file.Files.readAllBytes;
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.mockito.Mockito.verifyNoInteractions;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
+import java.util.Optional;
+
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
@@ -39,6 +37,44 @@ class UserControllerTest {
     @Autowired
     private transient MockMvc mockMvc;
 
+    @Test
+    void shouldReturnBadRequest() throws Exception {
+        mockMvc.perform(get(BASE_URL + "/0"))
+            .andExpect(status().isBadRequest())
+            .andReturn();
+    }
+
+    @Test
+    void shouldReturnNullUserObject () throws  Exception {
+        mockMvc.perform(get(BASE_URL + "/1"))
+            .andExpect(status().isNoContent())
+            .andReturn();
+    }
+
+    @Test
+    void shouldReturnUserObject() throws Exception {
+
+        UserEntity userEnt = new UserEntity(
+            1,
+            "TestSteve",
+            "TestNewman",
+            LocalDateTime.now(ZoneOffset.UTC),
+            12.0,
+            2,
+            1 );
+
+        UserModel userMod = new UserModel(Optional.of(userEnt));
+
+        final String userJson = new ObjectMapper().writeValueAsString(userMod);
+
+        when(userService.getById(1)).thenReturn(userMod);
+
+        mockMvc.perform(get(BASE_URL + "/1"))
+            .andExpect(status().isOk())
+            .andExpect(content().json(userJson))
+            .andReturn();
+    }
+
 //    @Test
 //    void shouldFindCourtByQuery() throws Exception {
 //
@@ -55,13 +91,6 @@ class UserControllerTest {
 //            .andExpect(content().json(expectedJson))
 //            .andReturn();
 //    }
-
-    @Test
-    void shouldReturnInvalidPostCodeError() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/0"))
-            .andExpect(status().isBadRequest())
-            .andReturn();
-    }
 
 //    @Test
 //    void shouldUseGlobalExceptionHandler() throws Exception {
