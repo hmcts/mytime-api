@@ -13,7 +13,6 @@ import java.util.Optional;
 @Service
 @Slf4j
 public class UserService {
-
     private final UserRepo userRepo;
 
     @Autowired
@@ -22,13 +21,16 @@ public class UserService {
     }
 
     public UserModel getById(int id) {
+
         log.info("Performing query for user by id {}", id);
+
         UserEntity userEnt = userRepo.findById(id)
             .orElseThrow(() -> new NotFoundException("User not found in Database: " + id));
 
         UserModel user = new UserModel(Optional.ofNullable(userEnt));
 
-        log.debug("Returned from User table: {}", user.toString());
+        log.debug("Returned from User table: {}", user);
+
         return user;
     }
 }

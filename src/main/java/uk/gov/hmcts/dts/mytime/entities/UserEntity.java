@@ -28,7 +28,7 @@ public class UserEntity {
     private String foreName;
 
     @Column(nullable = false)
-    private String sureName;
+    private String surname;
 
     @Column(nullable = false)
     private LocalDateTime startDate;

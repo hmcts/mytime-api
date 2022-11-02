@@ -11,7 +11,7 @@ import java.util.Optional;
 @NoArgsConstructor
 public class UserModel {
     private String foreName;
-    private String sureName;
+    private String surname;
     private LocalDateTime startDate;
     private Double contractHours;
     private int bonusEntitlement;
@@ -19,7 +19,7 @@ public class UserModel {
 
     public UserModel(Optional<UserEntity> userEntity) {
         this.foreName = userEntity.get().getForeName();
-        this.sureName = userEntity.get().getSureName();
+        this.surname = userEntity.get().getSureName();
         this.startDate = userEntity.get().getStartDate();
         this.contractHours = userEntity.get().getContractHours();
         this.bonusEntitlement = userEntity.get().getBonusEntitlement();
