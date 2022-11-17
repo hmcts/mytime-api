@@ -2,6 +2,7 @@ package uk.gov.hmcts.dts.mytime.entities;
 
 import lombok.Setter;
 import lombok.Getter;
+import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -10,7 +11,7 @@ import java.time.LocalDateTime;
 @Table(name = "users")
 @Getter
 @Setter
-public class User {
+public class UserEntity {
     @Id
     @GeneratedValue
     @Column(nullable = false)
@@ -30,4 +31,18 @@ public class User {
 
     private int bonusEntitlement;
     private int managerId;
+
+    public UserEntity(UserModel userModel){
+        this.Id = userModel.getId();
+        this.foreName = userModel.getForeName();
+        this.sureName = userModel.getSurName();
+        this.startDate = userModel.getStartDate();
+        this.contractHours = userModel.getContractHours();
+        this.bonusEntitlement = userModel.getBonusEntitlement();
+        this.managerId = userModel.getManagerId();
+    }
+
+    public UserEntity() {
+
+    }
 }

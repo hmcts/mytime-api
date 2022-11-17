@@ -1,13 +1,12 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.dts.mytime.models.User;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
+import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.services.UserService;
 
 import static org.springframework.http.ResponseEntity.ok;
@@ -27,10 +26,35 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/User/{ID}")
-    public ResponseEntity<User> getUserById(@PathVariable int Id ) {
-        User user = userService.getById(Id);
+    @GetMapping("/User/{Id}")
+    public ResponseEntity<UserModel> getUserById(@PathVariable @Validated int Id ) {
+        UserModel user = userService.getById(Id);
         return ok(user);
+    }
+
+    @PutMapping(path = "/saveUser")
+    public ResponseEntity<UserModel> saveUser(@RequestBody @Validated UserModel userModel){
+        //todo is there a clever way to handle errors?
+        return ok(userService.saveUser(userModel));
+    }
+
+    @PatchMapping(path = "/updateUser")
+    public ResponseEntity<UserModel> updateUser(@RequestBody @Validated UserModel userModel){
+        //todo is there a clever way to handle errors?
+        return ok(userService.saveUser(userModel));
+    }
+
+    @DeleteMapping("/deleteUser/")
+    public ResponseEntity deleteUser(@PathVariable @Validated int Id) {
+
+        if (userService.deleteUser(Id))
+        {
+            return ok(null);
+        }
+        else
+        {
+            return (ResponseEntity) ResponseEntity.status(HttpStatus.EXPECTATION_FAILED);
+        }
     }
 
 }

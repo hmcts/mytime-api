@@ -2,10 +2,10 @@ package uk.gov.hmcts.dts.mytime.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 
-import uk.gov.hmcts.dts.mytime.models.User;
+import org.springframework.data.repository.CrudRepository;
+import uk.gov.hmcts.dts.mytime.entities.UserEntity;
 
 import java.util.Optional;
 
-public interface UserRepo extends JpaRepository<User, Integer> {
-    Optional<User> findById(Integer id);
+public interface UserRepo extends CrudRepository<UserEntity, Integer> {
 }
