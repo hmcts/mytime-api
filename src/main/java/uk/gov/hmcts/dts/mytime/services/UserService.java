@@ -2,13 +2,9 @@ package uk.gov.hmcts.dts.mytime.services;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-
 import uk.gov.hmcts.dts.mytime.entities.UserEntity;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
-import uk.gov.hmcts.dts.mytime.exceptions.NotFoundException;
-
-import java.util.Optional;
 
 @Service
 @Slf4j
@@ -23,10 +19,10 @@ public class UserService {
     {
         log.info("Performing query for user by id {}", Id);
 
-        UserModel user = new UserModel(Optional.ofNullable(userRepo.findById(Id)
-            .orElseThrow(() -> new NotFoundException("User not found in Database: " + Id))));
+        UserModel user = new UserModel(userRepo.findById(Id));
 
-        log.debug("Returned from User table: {}", user.toString());
+        log.debug("Returned from User table: {}", user);
+
         return user;
     }
 
@@ -51,16 +47,18 @@ public class UserService {
 
     public boolean deleteUser(int Id)
     {
+        boolean isSaved = false;
         log.info("deleting user by id {}", Id);
-        //todo what would you normally do here
+
         try{
             userRepo.deleteById(Id);
-            return true;
+            isSaved = true;
         }
         catch(Exception e)
         {
             log.info("Error deleting User ID {}. Error {}.", Id, e.getMessage());
-            return false;
         }
+
+        return isSaved;
     }
 }

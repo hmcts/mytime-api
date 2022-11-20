@@ -42,6 +42,23 @@ public class UserEntity {
         this.managerId = userModel.getManagerId();
     }
 
+    public UserEntity(
+        int id,
+        String foreName,
+        String sureName,
+        LocalDateTime startDate,
+        double hours,
+        int bonusEntitlement,
+        int managerId) {
+        this.Id = id;
+        this.foreName = foreName;
+        this.sureName = sureName;
+        this.startDate = startDate;
+        this.contractHours = hours;
+        this.bonusEntitlement = bonusEntitlement;
+        this.managerId = managerId;
+    }
+
     public UserEntity() {
 
     }
