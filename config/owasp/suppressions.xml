@@ -14,8 +14,10 @@
     ]]></notes>
     <cve>CVE-2020-10663</cve>
     <cve>CVE-2016-1000027</cve>
-    <cve>CVE-2022-38752</cve>
     <cve>CVE-2020-7712</cve>
     <cve>CVE-2020-5408</cve>
+    <cve>CVE-2022-31690</cve> <!-- Vulnerability with spring security v5.7.x -->
+    <cve>CVE-2022-31692</cve> <!-- Vulnerability with spring security v5.7.x -->
+    <cve>CVE-2021-37533</cve> <!-- Wait until a version exists that fixes this -->
    </suppress>
 </suppressions>
