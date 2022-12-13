@@ -7,11 +7,12 @@ public class ErrorResponse {
     public int getErrorCode() {
         return errorCode;
     }
+
     public String getMessage() {
         return message;
     }
 
-    public ErrorResponse(int code, String message){
+    public ErrorResponse(int code, String message) {
         this.errorCode = code;
         this.message = message;
     }

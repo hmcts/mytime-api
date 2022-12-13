@@ -1,6 +1,6 @@
 package uk.gov.hmcts.dts.mytime.exceptions;
 
-public class BaseException extends Exception{
+public class BaseException extends Exception {
 
     private int httpResponseCode;
     private String errorMessage;
@@ -9,7 +9,7 @@ public class BaseException extends Exception{
         return errorMessage;
     }
 
-    public int getHttpResponseCode(){
+    public int getHttpResponseCode() {
         return httpResponseCode;
     }
 

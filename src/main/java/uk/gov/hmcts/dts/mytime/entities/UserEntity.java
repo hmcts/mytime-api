@@ -8,34 +8,33 @@ import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
 @Setter
 public class UserEntity {
     @Id
-    @GeneratedValue
-    @Column(nullable = false)
-    private int Id;
-
-    @Column(nullable = false)
+    @SequenceGenerator(name = "seq-gen", sequenceName = "user_id_seq", allocationSize = 1)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq-gen")
+    private Integer Id;
+    @Column(nullable = false, name = "forename")
     private String foreName;
-
-    @Column(nullable = false)
-    private String sureName;
-
-    @Column(nullable = false)
+    @Column(nullable = false, name = "surname")
+    private String surName;
+    @Column(nullable = false, name = "startdate")
     private LocalDateTime startDate;
-
-    @Column(nullable = false)
+    @Column(nullable = false, name = "contracthours")
     private Double contractHours;
 
-    private int bonusEntitlement;
-    private int managerId;
+    @Column(name = "bonusentitlement")
+    private Integer bonusEntitlement;
 
-    public UserEntity(UserModel userModel){
+    @Column(name = "managerid")
+    private Integer managerId;
+
+    public UserEntity(UserModel userModel) {
         this.Id = userModel.getId();
         this.foreName = userModel.getForeName();
-        this.sureName = userModel.getSurName();
+        this.surName = userModel.getSurName();
         this.startDate = userModel.getStartDate();
         this.contractHours = userModel.getContractHours();
         this.bonusEntitlement = userModel.getBonusEntitlement();
@@ -52,7 +51,7 @@ public class UserEntity {
         int managerId) {
         this.Id = id;
         this.foreName = foreName;
-        this.sureName = sureName;
+        this.surName = sureName;
         this.startDate = startDate;
         this.contractHours = hours;
         this.bonusEntitlement = bonusEntitlement;
@@ -60,6 +59,5 @@ public class UserEntity {
     }
 
     public UserEntity() {
-
     }
 }

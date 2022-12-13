@@ -17,5 +17,5 @@
     <cve>CVE-2022-38752</cve>
     <cve>CVE-2020-7712</cve>
     <cve>CVE-2020-5408</cve>
-   </suppress>
+  </suppress>
 </suppressions>

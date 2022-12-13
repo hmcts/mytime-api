@@ -21,8 +21,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @WebMvcTest(UserController.class)
@@ -39,7 +38,8 @@ class UserControllerTest {
         LocalDateTime.now(ZoneOffset.UTC),
         12.0,
         2,
-        1 );
+        1
+    );
 
     private static final UserModel userMod = new UserModel(Optional.of(userEnt));
     ObjectMapper objectMapper = new ObjectMapper();
@@ -57,6 +57,7 @@ class UserControllerTest {
             .andExpect(status().isBadRequest())
             .andReturn();
     }
+
     @Test
     void shouldReturnUserObject() throws Exception {
 
@@ -79,75 +80,50 @@ class UserControllerTest {
             .andExpect(status().isBadRequest())
             .andReturn();
     }
-    @Test
-    void shouldSaveAndReturnOk() throws Exception{
 
-        // don't understand why this is returning null
-        when(userService.saveUser(userMod)).thenReturn(userMod);
+    @Test
+    void shouldSaveAndReturnOk() throws Exception {
 
         objectMapper.registerModule(new JavaTimeModule());
 
         String requestJson = objectMapper.writeValueAsString(userMod);
 
         mockMvc.perform(put(BASE_URL + "/saveUser")
-            .content(requestJson)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().isOk());
+                            .content(requestJson)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
     }
 
     @Test
-    void shouldNotSaveAndReturn500() throws Exception{
-
-        // don't understand why this is returning null
-        when(userService.saveUser(userMod)).thenReturn(null);
+    void shouldNotSaveAndReturn500() throws Exception {
 
         objectMapper.registerModule(new JavaTimeModule());
 
         String requestJson = objectMapper.writeValueAsString(userMod);
 
         mockMvc.perform(put(BASE_URL + "/saveUser")
-            .content(requestJson)
-            .contentType(MediaType.APPLICATION_JSON)
-            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is5xxServerError());
+                            .content(requestJson)
+                            .contentType(MediaType.APPLICATION_JSON)
+                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is5xxServerError());
     }
     // endregion
     // region update user
-
+    // endpoint is using the same methods as save
     // endregion
 
+    // region delete user
+    @Test
+    void shouldDeleteAndReturnOk() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/1"))
+            .andExpect(status().isOk())
+            .andReturn();
+    }
 
-//    @Test
-//    void shouldFindCourtByQuery() throws Exception {
-//
-//        final Path path = Paths.get("src/test/resources/nspl_address_example.json");
-//        final String expectedJson = new String(readAllBytes(path));
-//
-//        final NsplAddress nsplAddress = new ObjectMapper().readValue(path.toFile(), NsplAddress.class);
-//        final String query = "PL51AA";
-//
-//        when(nsplService.getAddressInfo(query)).thenReturn(nsplAddress);
-//
-//        mockMvc.perform(get(BASE_URL + query))
-//            .andExpect(status().isOk())
-//            .andExpect(content().json(expectedJson))
-//            .andReturn();
-//    }
-
-//    @Test
-//    void shouldUseGlobalExceptionHandler() throws Exception {
-//
-//        final String query = "PL51AA";
-//
-//        when(userService.getYser(query)).thenDoNothing(new NotFoundException(query));
-//
-//        try {
-//            mockMvc.perform(get(BASE_URL + query)).andExpect(status().isNotFound());
-//        } catch (NestedServletException e) {
-//            assertThrows(NotFoundException.class, () -> {
-//                throw e.getCause();
-//            });
-//            assertThat(e.getMessage())
-//                .containsPattern("uk.gov.hmcts.reform.rpts.exceptions.NotFoundException: Not found: PL51AA");
-//        }
-//    }
+    @Test
+    void shouldTryToDeleteAndReturn400() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/0"))
+            .andExpect(status().is4xxClientError())
+            .andReturn();
+    }
+    // endregion
 }
