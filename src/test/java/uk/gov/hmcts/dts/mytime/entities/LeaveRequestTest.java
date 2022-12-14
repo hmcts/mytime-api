@@ -19,8 +19,9 @@ class LeaveRequestTest {
     private static final String REQUEST_COMMENT = "RequestComment";
     private static final String APPROVER_COMMENT = "ApproverComment";
 
-    private static final LeaveRequest LEAVE_REQUEST = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE,
-                                                 REQUEST_COMMENT, APPROVER_COMMENT);
+    private static final LeaveRequest LEAVE_REQUEST = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS,
+                                                                       START_DATE, END_DATE, REQUEST_COMMENT,
+                                                                       APPROVER_COMMENT);
 
     @Test
     void testCreation() {
@@ -49,8 +50,8 @@ class LeaveRequestTest {
 
     @Test
     void testEqualsIfOnlyIdFieldDifferent() {
-        LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE,
-                                                     REQUEST_COMMENT, APPROVER_COMMENT);
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
+                                                            END_DATE, REQUEST_COMMENT, APPROVER_COMMENT);
         assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
             .as("Should equal")
             .isTrue();
@@ -58,8 +59,8 @@ class LeaveRequestTest {
 
     @Test
     void testNotEqualsIfNonIdFieldDifferent() {
-        LeaveRequest anotherLeaveRequest = new LeaveRequest(100, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE2,
-                                                            REQUEST_COMMENT, APPROVER_COMMENT);
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(100, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
+                                                            END_DATE2, REQUEST_COMMENT, APPROVER_COMMENT);
         assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
             .as("Should not equal")
             .isFalse();
