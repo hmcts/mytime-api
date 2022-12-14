@@ -15,14 +15,16 @@ class LeaveRequestTest {
     private static final LeaveStatus STATUS = LeaveStatus.AWAITING;
     private static final LocalDate START_DATE = LocalDate.now();
     private static final LocalDate END_DATE = START_DATE.plusDays(5);
+    private static final LocalDate END_DATE2 = START_DATE.plusDays(10);
     private static final String REQUEST_COMMENT = "RequestComment";
     private static final String APPROVER_COMMENT = "ApproverComment";
 
+    private static final LeaveRequest LEAVE_REQUEST = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE,
+                                                 REQUEST_COMMENT, APPROVER_COMMENT);
+
     @Test
     void testCreation() {
-        LeaveRequest leaveRequest = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE,
-                                                     REQUEST_COMMENT, APPROVER_COMMENT);
-        assertThat(leaveRequest)
+        assertThat(LEAVE_REQUEST)
             .as("Value does not match")
             .extracting(
                 LeaveRequest::getEmployeeId,
@@ -43,5 +45,23 @@ class LeaveRequestTest {
                 REQUEST_COMMENT,
                 APPROVER_COMMENT
             );
+    }
+
+    @Test
+    void testEqualsIfOnlyIdFieldDifferent() {
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE,
+                                                     REQUEST_COMMENT, APPROVER_COMMENT);
+        assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
+            .as("Should equal")
+            .isTrue();
+    }
+
+    @Test
+    void testNotEqualsIfNonIdFieldDifferent() {
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(100, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE, END_DATE2,
+                                                            REQUEST_COMMENT, APPROVER_COMMENT);
+        assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
+            .as("Should not equal")
+            .isFalse();
     }
 }
