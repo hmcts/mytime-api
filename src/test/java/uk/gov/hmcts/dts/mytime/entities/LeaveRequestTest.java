@@ -49,11 +49,20 @@ class LeaveRequestTest {
     }
 
     @Test
+    void testEqualsIfSameObject() {
+        LeaveRequest anotherLeaveRequest = LEAVE_REQUEST;
+
+        assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
+            .as("Equals should equal")
+            .isTrue();
+    }
+
+    @Test
     void testEqualsIfOnlyIdFieldDifferent() {
         LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
                                                             END_DATE, REQUEST_COMMENT, APPROVER_COMMENT);
         assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
-            .as("Should equal")
+            .as("Equals should equal")
             .isTrue();
     }
 
@@ -62,7 +71,33 @@ class LeaveRequestTest {
         LeaveRequest anotherLeaveRequest = new LeaveRequest(100, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
                                                             END_DATE2, REQUEST_COMMENT, APPROVER_COMMENT);
         assertThat(LEAVE_REQUEST.equals(anotherLeaveRequest))
-            .as("Should not equal")
+            .as("Equals should not equal")
             .isFalse();
+    }
+
+    @Test
+    void testHashCodeIfSameObject() {
+        LeaveRequest anotherLeaveRequest = LEAVE_REQUEST;
+        assertThat(LEAVE_REQUEST.hashCode())
+            .as("Hashcode should equal")
+            .isEqualTo(anotherLeaveRequest.hashCode());
+    }
+
+    @Test
+    void testHashCodeIfOnlyIdFieldDifferent() {
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
+                                                            END_DATE, REQUEST_COMMENT, APPROVER_COMMENT);
+        assertThat(LEAVE_REQUEST.hashCode())
+            .as("Hashcode should equal")
+            .isEqualTo(anotherLeaveRequest.hashCode());
+    }
+
+    @Test
+    void testHashCodeIfNonIdFieldDifferent() {
+        LeaveRequest anotherLeaveRequest = new LeaveRequest(100, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
+                                                            END_DATE2, REQUEST_COMMENT, APPROVER_COMMENT);
+        assertThat(LEAVE_REQUEST.hashCode())
+            .as("Hashcode should not equal")
+            .isNotEqualTo(anotherLeaveRequest.hashCode());
     }
 }
