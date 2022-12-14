@@ -65,8 +65,8 @@ public class UserController {
         return HttpStatus.OK;
     }
 
-    @DeleteMapping("/{Id}")
-    public HttpStatus deleteUser(@PathVariable @Validated int id) throws UserException {
+    @DeleteMapping(value = "/delete/{id}")
+    public HttpStatus deleteUser(@PathVariable int id) throws UserException {
 
         if (id == 0) {
             throw new UserException(400, "Please provide a vaild ID");

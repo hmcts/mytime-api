@@ -96,16 +96,16 @@ class UserControllerTests {
     }
 
     @Test
-    void shouldNotSaveAndReturn500() throws Exception {
+    void shouldNotSaveAndReturn400() throws Exception {
 
         objectMapper.registerModule(new JavaTimeModule());
 
-        String requestJson = objectMapper.writeValueAsString(userMod);
+        String requestJson = objectMapper.writeValueAsString("");
 
         mockMvc.perform(put(BASE_URL + "/saveUser")
                             .content(requestJson)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is5xxServerError());
+                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
     }
     // endregion
     // region update user
@@ -115,7 +115,7 @@ class UserControllerTests {
     // region delete user
     @Test
     void shouldDeleteAndReturnOk() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/1"))
+        MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/delete/1"))
             .andExpect(status().isOk())
             .andReturn();
     }
