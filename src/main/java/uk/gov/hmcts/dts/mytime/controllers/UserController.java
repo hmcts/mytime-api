@@ -1,12 +1,19 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.openfeign.support.FeignHttpClientProperties;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.dts.mytime.exceptions.UserException;
 import uk.gov.hmcts.dts.mytime.helpers.ErrorResponse;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
@@ -30,14 +37,14 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/{Id}")
-    public ResponseEntity<UserModel> getUserById(@PathVariable int Id) throws UserException {
+    @GetMapping("/{id}")
+    public ResponseEntity<UserModel> getUserById(@PathVariable int id) throws UserException {
 
-        if (Id == 0) {
+        if (id == 0) {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        UserModel user = userService.getById(Id);
+        UserModel user = userService.getById(id);
 
         return ok(user);
     }
@@ -59,13 +66,13 @@ public class UserController {
     }
 
     @DeleteMapping("/{Id}")
-    public HttpStatus deleteUser(@PathVariable @Validated int Id) throws UserException {
+    public HttpStatus deleteUser(@PathVariable @Validated int id) throws UserException {
 
-        if (Id == 0) {
+        if (id == 0) {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        userService.deleteUser(Id);
+        userService.deleteUser(id);
 
         return HttpStatus.OK;
     }

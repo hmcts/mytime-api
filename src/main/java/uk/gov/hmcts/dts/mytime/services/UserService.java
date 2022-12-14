@@ -16,13 +16,13 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public UserModel getById(int Id) throws UserException {
+    public UserModel getById(int id) throws UserException {
 
-        log.info("Performing query for user by id {}", Id);
+        log.info("Performing query for user by id {}", id);
         UserModel user;
 
         try {
-            user = new UserModel(userRepo.findById(Id));
+            user = new UserModel(userRepo.findById(id));
             log.debug("Returned from User table: {}", user);
         } catch (Exception e) {
             throw new UserException(500, "Has been an error retrieving the user");
@@ -45,14 +45,14 @@ public class UserService {
         }
     }
 
-    public void deleteUser(int Id) throws UserException {
+    public void deleteUser(int id) throws UserException {
 
-        log.info("deleting user by id {}", Id);
+        log.info("deleting user by id {}", id);
 
         try {
-            userRepo.deleteById(Id);
+            userRepo.deleteById(id);
         } catch (Exception e) {
-            log.info("Error deleting User ID {}. Error {}.", Id, e.getMessage());
+            log.info("Error deleting User ID {}. Error {}.", id, e.getMessage());
             throw new UserException(500, "Error deleting the user");
         }
     }

@@ -15,7 +15,7 @@ import java.util.Optional;
 @Setter
 public class UserModel {
 
-    private int Id;
+    private int id;
     private String foreName;
     private String surName;
     private LocalDateTime startDate;
@@ -24,7 +24,7 @@ public class UserModel {
     private int managerId;
 
     public UserModel(Optional<UserEntity> userEntity) {
-        this.Id = userEntity.get().getId();
+        this.id = userEntity.get().getId();
         this.foreName = userEntity.get().getForeName();
         this.surName = userEntity.get().getSurName();
         this.startDate = userEntity.get().getStartDate();

@@ -1,11 +1,18 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
-import lombok.Setter;
+
 import lombok.Getter;
+import lombok.Setter;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 
-import javax.persistence.*;
 import java.time.LocalDateTime;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 @Entity
 @Table(name = "user")
@@ -15,7 +22,7 @@ public class UserEntity {
     @Id
     @SequenceGenerator(name = "seq-gen", sequenceName = "user_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq-gen")
-    private Integer Id;
+    private Integer id;
     @Column(nullable = false, name = "forename")
     private String foreName;
     @Column(nullable = false, name = "surname")
@@ -32,7 +39,7 @@ public class UserEntity {
     private Integer managerId;
 
     public UserEntity(UserModel userModel) {
-        this.Id = userModel.getId();
+        this.id = userModel.getId();
         this.foreName = userModel.getForeName();
         this.surName = userModel.getSurName();
         this.startDate = userModel.getStartDate();
@@ -49,7 +56,7 @@ public class UserEntity {
         double hours,
         int bonusEntitlement,
         int managerId) {
-        this.Id = id;
+        this.id = id;
         this.foreName = foreName;
         this.surName = sureName;
         this.startDate = startDate;
