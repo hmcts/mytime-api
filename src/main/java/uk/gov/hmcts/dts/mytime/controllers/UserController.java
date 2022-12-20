@@ -45,18 +45,11 @@ public class UserController {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        UserModel user;
-        user = userService.getById(id);
-
-        if (user == null) {
-            throw new UserException(204, "No user found");
-        }
-
-        return ok(user);
+        return ok(userService.getById(id));
     }
 
     @PutMapping(path = "/saveUser")
-    public HttpStatus saveUser(@RequestBody @Valid UserModel userModel) throws UserException {
+    public HttpStatus saveUser(@RequestBody @Valid UserModel userModel) {
 
         userService.saveUser(userModel);
 
@@ -64,7 +57,7 @@ public class UserController {
     }
 
     @PatchMapping(path = "/updateUser")
-    public HttpStatus updateUser(@RequestBody @Valid UserModel userModel) throws UserException {
+    public HttpStatus updateUser(@RequestBody @Valid UserModel userModel) {
 
         userService.saveUser(userModel);
 
@@ -78,14 +71,7 @@ public class UserController {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        try {
-            log.info("deleting user by id {}", id);
-            userService.deleteUser(id);
-        } catch (Exception e) {
-            log.error("Error deleting user with id {}. The error is {}", id, e.getMessage());
-            throw new UserException(500, "There has been an error deleting the user");
-        }
-
+        userService.deleteUser(id);
 
         return HttpStatus.OK;
     }

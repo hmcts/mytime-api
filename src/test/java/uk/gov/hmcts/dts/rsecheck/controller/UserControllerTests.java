@@ -136,7 +136,7 @@ class UserControllerTests {
             .andExpect(status().is4xxClientError())
             .andReturn();
 
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(405);
     }
     // endregion
 }

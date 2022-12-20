@@ -38,6 +38,10 @@ public class UserEntity {
     @Column(name = "managerid")
     private Integer managerId;
 
+    public UserEntity() {
+        // This constructor is intentionally empty. Nothing special is needed here.
+    }
+
     public UserEntity(UserModel userModel) {
         this.id = userModel.getId();
         this.foreName = userModel.getForeName();
