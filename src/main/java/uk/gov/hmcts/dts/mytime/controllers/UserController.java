@@ -82,6 +82,6 @@ public class UserController {
         ErrorResponse errorResponse = new ErrorResponse(
             ex.getHttpResponseCode(), ex.getMessage());
 
-        return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.valueOf(errorResponse.getErrorCode()));
+        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getErrorCode()));
     }
 }

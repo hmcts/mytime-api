@@ -24,7 +24,7 @@ public class UserModel {
     private int managerId;
 
     public UserModel(Optional<UserEntity> userEntity) {
-        this.id = userEntity.get().getId();
+        this.id = userEntity.isPresent() ? userEntity.get().getId() : 0;
         this.foreName = userEntity.get().getForeName();
         this.surName = userEntity.get().getSurName();
         this.startDate = userEntity.get().getStartDate();
