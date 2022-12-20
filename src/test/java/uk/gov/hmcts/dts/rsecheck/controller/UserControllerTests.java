@@ -32,7 +32,7 @@ class UserControllerTests {
 
     private static final String BASE_URL = "/User";
 
-    private static final UserEntity userEnt = new UserEntity(
+    private static final UserEntity USER_ENTITY = new UserEntity(
         1,
         "TestSteve",
         "TestNewman",
@@ -42,7 +42,7 @@ class UserControllerTests {
         1
     );
 
-    private static final UserModel userMod = new UserModel(Optional.of(userEnt));
+    private static final UserModel USER_MODEL = new UserModel(Optional.of(USER_ENTITY));
     ObjectMapper objectMapper = new ObjectMapper();
 
     @MockBean
@@ -53,16 +53,18 @@ class UserControllerTests {
 
     // region get by id
     @Test
-    void getByIdShouldReturnBadRequest() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/0"))
+    void shouldReturnBadRequestGetById() throws Exception {
+        MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/0"))
             .andExpect(status().isBadRequest())
             .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
     }
 
     @Test
     void shouldReturnUserObject() throws Exception {
 
-        when(userService.getById(1)).thenReturn(userMod);
+        when(userService.getById(1)).thenReturn(USER_MODEL);
 
         MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/1"))
             .andExpect(status().isOk())
@@ -70,16 +72,18 @@ class UserControllerTests {
 
         objectMapper.registerModule(new JavaTimeModule());
         UserModel returnedModel = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserModel.class);
-        assertThat(returnedModel.getId()).isEqualTo(userMod.getId());
+        assertThat(returnedModel.getId()).isEqualTo(USER_MODEL.getId());
     }
 
     // endregion
     // region save user
     @Test
     void shouldReturnBadRequest() throws Exception {
-        mockMvc.perform(get(BASE_URL + "/saveUser"))
+        MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/saveUser"))
             .andExpect(status().isBadRequest())
             .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
     }
 
     @Test
@@ -87,12 +91,14 @@ class UserControllerTests {
 
         objectMapper.registerModule(new JavaTimeModule());
 
-        String requestJson = objectMapper.writeValueAsString(userMod);
+        String requestJson = objectMapper.writeValueAsString(USER_MODEL);
 
-        mockMvc.perform(put(BASE_URL + "/saveUser")
+        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/saveUser")
                             .content(requestJson)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful());
+                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
     }
 
     @Test
@@ -102,10 +108,12 @@ class UserControllerTests {
 
         String requestJson = objectMapper.writeValueAsString("");
 
-        mockMvc.perform(put(BASE_URL + "/saveUser")
+        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/saveUser")
                             .content(requestJson)
                             .contentType(MediaType.APPLICATION_JSON)
-                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError());
+                            .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError()).andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
     }
     // endregion
     // region update user
@@ -118,6 +126,8 @@ class UserControllerTests {
         MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/delete/1"))
             .andExpect(status().isOk())
             .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(200);
     }
 
     @Test
@@ -125,6 +135,8 @@ class UserControllerTests {
         MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/0"))
             .andExpect(status().is4xxClientError())
             .andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
     }
     // endregion
 }

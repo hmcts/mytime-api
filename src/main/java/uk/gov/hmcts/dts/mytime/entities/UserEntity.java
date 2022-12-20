@@ -64,7 +64,4 @@ public class UserEntity {
         this.bonusEntitlement = bonusEntitlement;
         this.managerId = managerId;
     }
-
-    public UserEntity() {
-    }
 }

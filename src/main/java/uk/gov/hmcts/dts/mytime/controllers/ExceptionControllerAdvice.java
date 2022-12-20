@@ -10,10 +10,9 @@ import uk.gov.hmcts.dts.mytime.helpers.ErrorResponse;
 public class ExceptionControllerAdvice {
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(Exception ex) {
+    public ResponseEntity<ErrorResponse> exceptionHandler() {
         ErrorResponse error = new ErrorResponse(
-            HttpStatus.INTERNAL_SERVER_ERROR.value(),
-            "Please contact the help desk"
+            500, "Please contact the help desk"
         );
 
         return new ResponseEntity<>(error, HttpStatus.OK);

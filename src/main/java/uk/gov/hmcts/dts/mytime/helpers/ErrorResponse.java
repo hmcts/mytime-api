@@ -1,8 +1,8 @@
 package uk.gov.hmcts.dts.mytime.helpers;
 
 public class ErrorResponse {
-    private int errorCode;
-    private String message;
+    private final int errorCode;
+    private final String message;
 
     public int getErrorCode() {
         return errorCode;

@@ -1,10 +1,10 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -28,6 +28,7 @@ import static org.springframework.http.ResponseEntity.ok;
     path = "/User",
     produces = {MediaType.APPLICATION_JSON_VALUE}
 )
+@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -44,7 +45,12 @@ public class UserController {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        UserModel user = userService.getById(id);
+        UserModel user;
+        user = userService.getById(id);
+
+        if (user == null) {
+            throw new UserException(204, "No user found");
+        }
 
         return ok(user);
     }
@@ -65,14 +71,21 @@ public class UserController {
         return HttpStatus.OK;
     }
 
-    @DeleteMapping(value = "/delete/{id}")
+    @DeleteMapping(path = "/delete/{id}")
     public HttpStatus deleteUser(@PathVariable int id) throws UserException {
 
         if (id == 0) {
             throw new UserException(400, "Please provide a vaild ID");
         }
 
-        userService.deleteUser(id);
+        try {
+            log.info("deleting user by id {}", id);
+            userService.deleteUser(id);
+        } catch (Exception e) {
+            log.error("Error deleting user with id {}. The error is {}", id, e.getMessage());
+            throw new UserException(500, "There has been an error deleting the user");
+        }
+
 
         return HttpStatus.OK;
     }
@@ -82,7 +95,7 @@ public class UserController {
 
         ErrorResponse errorResponse = new ErrorResponse(
             ex.getHttpResponseCode(), ex.getMessage());
-        var code = errorResponse.getErrorCode();
+
         return new ResponseEntity<ErrorResponse>(errorResponse, HttpStatus.valueOf(errorResponse.getErrorCode()));
     }
 }

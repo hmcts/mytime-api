@@ -3,7 +3,6 @@ package uk.gov.hmcts.dts.mytime.services;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import uk.gov.hmcts.dts.mytime.entities.UserEntity;
-import uk.gov.hmcts.dts.mytime.exceptions.UserException;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
 
@@ -16,22 +15,12 @@ public class UserService {
         this.userRepo = userRepo;
     }
 
-    public UserModel getById(int id) throws UserException {
+    public UserModel getById(int id) {
 
-        log.info("Performing query for user by id {}", id);
-        UserModel user;
-
-        try {
-            user = new UserModel(userRepo.findById(id));
-            log.debug("Returned from User table: {}", user);
-        } catch (Exception e) {
-            throw new UserException(500, "Has been an error retrieving the user");
-        }
-
-        return user;
+        return new UserModel(userRepo.findById(id));
     }
 
-    public void saveUser(UserModel userModel) throws UserException {
+    public void saveUser(UserModel userModel) {
         log.info("Updating user {}", userModel.toString());
 
         final UserEntity userEntity = new UserEntity(userModel);
@@ -41,19 +30,11 @@ public class UserService {
             log.info("User save successful");
         } catch (Exception e) {
             log.info("Error saving {}", e.getMessage());
-            throw new UserException(500, "Could not save the user");
         }
     }
 
-    public void deleteUser(int id) throws UserException {
+    public void deleteUser(int id) {
 
-        log.info("deleting user by id {}", id);
-
-        try {
-            userRepo.deleteById(id);
-        } catch (Exception e) {
-            log.info("Error deleting User ID {}. Error {}.", id, e.getMessage());
-            throw new UserException(500, "Error deleting the user");
-        }
+        userRepo.deleteById(id);
     }
 }
