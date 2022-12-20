@@ -1,12 +1,11 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,12 +13,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import uk.gov.hmcts.dts.mytime.exceptions.UserException;
-import uk.gov.hmcts.dts.mytime.helpers.ErrorResponse;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.services.UserService;
 
 import javax.validation.Valid;
+import javax.validation.constraints.Min;
 
 import static org.springframework.http.ResponseEntity.ok;
 
@@ -28,7 +26,6 @@ import static org.springframework.http.ResponseEntity.ok;
     path = "/User",
     produces = {MediaType.APPLICATION_JSON_VALUE}
 )
-@Slf4j
 public class UserController {
 
     private final UserService userService;
@@ -39,11 +36,9 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UserModel> getUserById(@PathVariable int id) throws UserException {
-
-        if (id == 0) {
-            throw new UserException(400, "Please provide a vaild ID");
-        }
+    @Validated
+    public ResponseEntity<UserModel> getUserById(@PathVariable @Valid @Min(value = 1,
+        message = "Invalid user ID") int id) {
 
         return ok(userService.getById(id));
     }
@@ -65,23 +60,11 @@ public class UserController {
     }
 
     @DeleteMapping(path = "/delete/{id}")
-    public HttpStatus deleteUser(@PathVariable int id) throws UserException {
-
-        if (id == 0) {
-            throw new UserException(400, "Please provide a vaild ID");
-        }
+    @Validated
+    public HttpStatus deleteUser(@PathVariable @Valid @Min(value = 1, message = "Invalid user ID") int id) {
 
         userService.deleteUser(id);
 
         return HttpStatus.OK;
-    }
-
-    @ExceptionHandler(UserException.class)
-    public ResponseEntity<ErrorResponse> exceptionHandler(UserException ex) {
-
-        ErrorResponse errorResponse = new ErrorResponse(
-            ex.getHttpResponseCode(), ex.getMessage());
-
-        return new ResponseEntity<>(errorResponse, HttpStatus.valueOf(errorResponse.getErrorCode()));
     }
 }

@@ -17,7 +17,7 @@ public class UserService {
     public UserModel getById(int id) {
 
         if (!userRepo.existsById(id)) {
-            throw new NotFoundException("No user was found");
+            throw new NotFoundException("No user found");
         }
         return new UserModel(userRepo.findById(id));
     }
