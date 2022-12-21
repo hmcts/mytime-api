@@ -32,5 +32,4 @@ public class UserModel {
         this.bonusEntitlement = userEntity.isPresent() ? userEntity.get().getBonusEntitlement() : 0;
         this.managerId = userEntity.isPresent() ? userEntity.get().getManagerId() : 0;
     }
-
 }

@@ -6,6 +6,8 @@ import uk.gov.hmcts.dts.mytime.exceptions.NotFoundException;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
 
+import java.util.Optional;
+
 @Service
 public class UserService {
     private final UserRepo userRepo;
@@ -22,11 +24,11 @@ public class UserService {
         return new UserModel(userRepo.findById(id));
     }
 
-    public void saveUser(UserModel userModel) {
+    public UserModel saveUser(UserModel userModel) {
 
         final UserEntity userEntity = new UserEntity(userModel);
 
-        userRepo.save(userEntity);
+        return new UserModel(Optional.of(userRepo.save(userEntity)));
 
     }
 

@@ -1,5 +1,6 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -16,9 +17,11 @@ import org.springframework.web.bind.annotation.RestController;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.services.UserService;
 
+import java.net.URI;
 import javax.validation.Valid;
 import javax.validation.constraints.Min;
 
+import static org.springframework.http.ResponseEntity.created;
 import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
@@ -26,6 +29,7 @@ import static org.springframework.http.ResponseEntity.ok;
     path = "/User",
     produces = {MediaType.APPLICATION_JSON_VALUE}
 )
+@Validated
 public class UserController {
 
     private final UserService userService;
@@ -36,34 +40,30 @@ public class UserController {
     }
 
     @GetMapping("/{id}")
-    @Validated
-    public ResponseEntity<UserModel> getUserById(@PathVariable @Valid @Min(value = 1,
+    public ResponseEntity<UserModel> getUserById(@PathVariable("id") @Valid @Min(value = 1,
         message = "Invalid user ID") int id) {
 
         return ok(userService.getById(id));
     }
 
     @PutMapping(path = "/saveUser")
-    public HttpStatus saveUser(@RequestBody @Valid UserModel userModel) {
+    public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserModel userModel) {
 
-        userService.saveUser(userModel);
-
-        return HttpStatus.CREATED;
+        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
     }
 
     @PatchMapping(path = "/updateUser")
-    public HttpStatus updateUser(@RequestBody @Valid UserModel userModel) {
+    public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserModel userModel) {
 
         userService.saveUser(userModel);
 
-        return HttpStatus.OK;
+        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
     }
 
-    @DeleteMapping(path = "/delete/{id}")
-    @Validated
-    public HttpStatus deleteUser(@PathVariable @Valid @Min(value = 1, message = "Invalid user ID") int id) {
+    @DeleteMapping(path = "/delete")
+    public HttpStatus deleteUser(@RequestBody @Valid UserModel userModel) {
 
-        userService.deleteUser(id);
+        userService.deleteUser(userModel.getId());
 
         return HttpStatus.OK;
     }
