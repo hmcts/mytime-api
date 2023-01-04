@@ -9,6 +9,8 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 class UserTest {
     private static final Integer ID = 1;
+
+    private static final Integer ID2 = 2;
     private static final String FORENAME = "TestSteve";
     private static final String SURNAME = "TestNewman";
     private static final LocalDateTime DATE_JOINED = LocalDateTime.now(ZoneOffset.UTC);
@@ -58,20 +60,22 @@ class UserTest {
             .isTrue();
     }
 
-    /*@Test
+    @Test
     void testEqualsIfOnlyIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(2,
-                                                       FORENAME,
-                                                       SURNAME,
-                                                       DATE_JOINED,
-                                                       HOURS,
-                                                       BONUS_ENTITLEMENT,
-                                                       MANAGER_ID);
+        UserEntity anotherUserEntity  = new UserEntity(
+            ID2,
+            FORENAME,
+            SURNAME,
+            DATE_JOINED,
+            HOURS,
+            BONUS_ENTITLEMENT,
+            MANAGER_ID
+        );
 
         assertThat(USER_ENTITY.equals(anotherUserEntity))
             .as("Equals should equal")
             .isTrue();
-    }*/
+    }
 
     @Test
     void testNotEqualsIfNonIdFieldDifferent() {
@@ -96,9 +100,9 @@ class UserTest {
             .isEqualTo(anotherUserEntity.hashCode());
     }
 
-    /*@Test
+    @Test
     void testHashCodeIfOnlyIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(2,
+        UserEntity anotherUserEntity  = new UserEntity(ID2,
                                                        FORENAME,
                                                        SURNAME,
                                                        DATE_JOINED,
@@ -108,7 +112,7 @@ class UserTest {
         assertThat(USER_ENTITY.hashCode())
             .as("Hashcode should equal")
             .isEqualTo(anotherUserEntity.hashCode());
-    }*/
+    }
 
     @Test
     void testHashCodeIfNonIdFieldDifferent() {

@@ -1,5 +1,7 @@
 package uk.gov.hmcts.dts.mytime.services;
 
+
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,26 +20,38 @@ import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
+
 @ExtendWith(MockitoExtension.class)
 class UserServiceTest {
 
     private static final Integer EMPLOYEE_ID = 1;
 
-    private static final UserEntity USER_ENTITY = new UserEntity(
-        1,
-        "TestSteve",
-        "TestNewman",
-        LocalDateTime.now(ZoneOffset.UTC),
-        12.0,
-        2,
-        1
-    );
+    private static final UserEntity USER_ENTITY = new UserEntity();
 
+    private static final UserModel USER_MODEL = new UserModel();
     @Mock
     private UserRepo userRepo;
 
     @InjectMocks
     private UserService userService;
+
+    @BeforeAll
+    static void setUp() {
+        USER_ENTITY.setStartDate(LocalDateTime.now(ZoneOffset.UTC));
+        USER_ENTITY.setForeName("Test");
+        USER_ENTITY.setContractHours(37.0);
+        USER_ENTITY.setId(EMPLOYEE_ID);
+        USER_ENTITY.setManagerId(EMPLOYEE_ID);
+        USER_ENTITY.setBonusEntitlement(3);
+        USER_ENTITY.setSurName("Tester");
+        USER_MODEL.setStartDate(USER_ENTITY.getStartDate());
+        USER_MODEL.setForeName(USER_ENTITY.getForeName());
+        USER_MODEL.setContractHours(USER_ENTITY.getContractHours());
+        USER_MODEL.setId(USER_ENTITY.getId());
+        USER_MODEL.setManagerId(USER_ENTITY.getManagerId());
+        USER_MODEL.setBonusEntitlement(USER_ENTITY.getBonusEntitlement());
+        USER_MODEL.setSurName(USER_ENTITY.getSurName());
+    }
 
     @Test
     void shouldGetUserById() {

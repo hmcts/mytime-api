@@ -55,8 +55,6 @@ public class UserController {
     @PatchMapping(path = "/updateUser")
     public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserModel userModel) {
 
-        userService.saveUser(userModel);
-
         return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
     }
 

@@ -23,8 +23,10 @@ import static org.mockito.Mockito.when;
 import static org.springframework.http.HttpStatus.CREATED;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 @WebMvcTest(UserController.class)
 @ContextConfiguration(classes = UserController.class)
@@ -119,7 +121,40 @@ class UserControllerTests {
     }
     // endregion
     // region update user
-    // endpoint is using the same methods as save
+
+    @Test
+    void shouldUpdateAndReturnOk() throws Exception {
+
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String requestJson = objectMapper.writeValueAsString(USER_MODEL);
+
+        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/updateUser")
+                                                  .content(requestJson)
+                                                  .contentType(MediaType.APPLICATION_JSON)
+                                                  .accept(MediaType.APPLICATION_JSON))
+                                                        .andExpect(status()
+                                                        .is2xxSuccessful()).andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(CREATED.value());
+    }
+
+    @Test
+    void shouldNotUpdateAndReturn400() throws Exception {
+
+        objectMapper.registerModule(new JavaTimeModule());
+
+        String requestJson = objectMapper.writeValueAsString("");
+
+        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/updateUser")
+                                                  .content(requestJson)
+                                                  .contentType(MediaType.APPLICATION_JSON)
+                                                  .accept(MediaType.APPLICATION_JSON))
+                                                        .andExpect(status()
+                                                        .is4xxClientError()).andReturn();
+
+        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(400);
+    }
     // endregion
 
     // region delete user

@@ -1,6 +1,9 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
@@ -18,6 +21,9 @@ import javax.persistence.Table;
 @Table(name = "user")
 @Getter
 @Setter
+@Data
+@AllArgsConstructor
+@EqualsAndHashCode(exclude = {"id"})
 public class UserEntity {
     @Id
     @SequenceGenerator(name = "seq-gen", sequenceName = "user_id_seq", allocationSize = 1)

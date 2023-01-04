@@ -26,7 +26,7 @@ public class UserService {
 
     public UserModel saveUser(UserModel userModel) {
 
-        final UserEntity userEntity = new UserEntity(userModel);
+        UserEntity userEntity = new UserEntity(userModel);
 
         return new UserModel(Optional.of(userRepo.save(userEntity)));
 
