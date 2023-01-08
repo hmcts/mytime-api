@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 
+import javax.validation.ConstraintViolationException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -54,6 +55,20 @@ class GlobalExceptionHandlerTest {
             .containsExactly(
                 HttpStatus.BAD_REQUEST,
                 expectedExceptionMessage);
+    }
+
+    @Test
+    void testHandleConstraintViolationException() {
+        ConstraintViolationException exception = new ConstraintViolationException(TEST_MESSAGE, null);
+
+        assertThat(globalExceptionHandler.handle(exception))
+            .as(ERROR_MESSAGE)
+            .extracting(
+                ResponseEntity::getStatusCode,
+                e -> e.getBody().getMessage())
+            .containsExactly(
+                HttpStatus.BAD_REQUEST,
+                TEST_MESSAGE);
     }
 
     @Test
