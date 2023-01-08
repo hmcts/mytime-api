@@ -23,6 +23,7 @@ import static org.springframework.http.HttpStatus.NOT_FOUND;
 import static org.springframework.http.HttpStatus.OK;
 
 @ExtendWith(SpringExtension.class)
+@SuppressWarnings("PMD.TooManyMethods")
 class LeaveRequestControllerTest extends FunctionalTestBase  {
     private static final String PATH = "/leave-request";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
@@ -38,7 +39,6 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
     private static final LocalDate END_DATE_PLUS_2 = END_DATE.plusDays(2);
     private static final LocalDate END_DATE_PLUS_3 = END_DATE.plusDays(3);
     private static final LocalDate END_DATE_PLUS_4 = END_DATE.plusDays(4);
-    private static final LocalDate END_DATE_PLUS_5 = END_DATE.plusDays(5);
 
     private static final String LEAVE_REQUEST_MESSAGE = "Leave request does not match";
     private static final String STATUS_MESSAGE = "Status does not match";
@@ -161,7 +161,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
     @Test
     void shouldDeleteExistingLeaveRequest() throws JsonProcessingException {
         LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
-                                              START_DATE, END_DATE_PLUS_4, null, null);
+                                              START_DATE, END_DATE_PLUS_3, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
         var response = doPostRequest(PATH, jsonInput);
@@ -208,7 +208,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
     @Test
     void shouldGetAllLeaveRequestForTheEmployee() throws JsonProcessingException {
         LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
-                                              START_DATE, END_DATE_PLUS_5, null, null);
+                                              START_DATE, END_DATE_PLUS_4, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
         var response = doPostRequest(PATH, jsonInput);
