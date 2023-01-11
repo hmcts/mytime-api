@@ -72,14 +72,14 @@ class UserServiceTest {
             .hasMessage("No user found");
     }
 
-    /*@Test
+    @Test
     void shouldSaveUser() {
         when(userRepo.save(USER_ENTITY)).thenReturn(USER_ENTITY);
 
         UserModel res = userService.saveUser(USER_MODEL);
 
         assertThat(res.getId()).isEqualTo(EMPLOYEE_ID);
-    }*/
+    }
 
     @Test
     void shouldThrowNotFoundExceptionDelete() {

@@ -55,16 +55,6 @@ class UserControllerTests {
 
     // region get by id
 
-    // endpoint falls over rather than return 400
-    /*@Test
-    void shouldReturnBadRequestGetById() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/0"))
-            .andExpect(status().is5xxServerError())
-            .andReturn();
-
-        assertThat(mvcResult.getResponse().getStatus()).isEqualTo(500);
-    }*/
-
     @Test
     void shouldReturnUserObject() throws Exception {
 
