@@ -20,5 +20,8 @@
     <cve>CVE-2022-31690</cve> <!-- Vulnerability with spring security v5.7.x -->
     <cve>CVE-2022-31692</cve> <!-- Vulnerability with spring security v5.7.x -->
     <cve>CVE-2021-37533</cve> <!-- Wait until a version exists that fixes this -->
+    <cve>CVE-2021-4277</cve>  <!-- LatencyUtils already on latest version 2.0.3, hence suppressing -->
+    <cve>CVE-2022-3064</cve>  <!-- snakeyaml already on latest version 1.33, hence suppressing -->
+    <cve>CVE-2021-4235</cve>  <!-- snakeyaml already on latest version 1.33, hence suppressing -->
    </suppress>
 </suppressions>
