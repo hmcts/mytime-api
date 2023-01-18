@@ -117,7 +117,7 @@ class UserTest {
         UserEntity anotherUserEntity = USER_ENTITY;
         assertThat(USER_ENTITY.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherUserEntity.hashCode());
+            .hasSameHashCodeAs(anotherUserEntity.hashCode());
     }
 
     @Test
@@ -131,7 +131,7 @@ class UserTest {
                                                        MANAGER_ID);
         assertThat(USER_ENTITY.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherUserEntity.hashCode());
+            .hasSameHashCodeAs(anotherUserEntity.hashCode());
     }
 
     @Test
