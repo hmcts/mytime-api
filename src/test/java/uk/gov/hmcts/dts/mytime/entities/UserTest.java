@@ -6,6 +6,7 @@ import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 class UserTest {
     private static final Integer ID = 1;
@@ -27,6 +28,25 @@ class UserTest {
         BONUS_ENTITLEMENT,
         MANAGER_ID
     );
+
+    private static final UserModel USER_MODEL = new UserModel(
+        ID,
+        FORENAME,
+        SURNAME,
+        DATE_JOINED,
+        HOURS,
+        BONUS_ENTITLEMENT,
+        MANAGER_ID
+    );
+
+    @Test
+    void testCreationWithModel(){
+
+        UserEntity newUserEnt = new UserEntity(USER_MODEL);
+
+        assertThat(newUserEnt.getForeName()).isEqualTo(USER_MODEL.getForeName());
+
+    }
 
     @Test
     void testCreation() {
