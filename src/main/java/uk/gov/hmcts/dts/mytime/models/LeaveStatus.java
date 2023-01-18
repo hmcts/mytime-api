@@ -11,7 +11,7 @@ public enum LeaveStatus {
     @JsonCreator
     public static LeaveStatus create(String value) {
         if (value == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Leave status cannot be null");
         }
         for (LeaveStatus status : values()) {
             if (value.equals(status.toString())) {

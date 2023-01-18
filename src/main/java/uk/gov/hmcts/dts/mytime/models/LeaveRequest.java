@@ -15,27 +15,27 @@ import javax.validation.constraints.NotNull;
 @AllArgsConstructor
 public class LeaveRequest {
     @NotNull(message = "Employee ID is required")
-    Integer employeeId;
+    private Integer employeeId;
 
     @NotNull(message = "Approver ID is required")
-    Integer approverId;
+    private Integer approverId;
 
     @NotNull(message = "Leave type is required")
-    LeaveType type;
+    private LeaveType type;
 
-    LeaveStatus status;
+    private LeaveStatus status;
 
     @NotNull(message = "start date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDate startDate;
+    private LocalDate startDate;
 
     @NotNull(message = "End date is required")
     @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
-    LocalDate endDate;
+    private LocalDate endDate;
 
-    String requestComment;
+    private String requestComment;
 
-    String approverComment;
+    private String approverComment;
 
     public LeaveRequest(uk.gov.hmcts.dts.mytime.entities.LeaveRequest entity) {
         this.employeeId = entity.getEmployeeId();
