@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.time.LocalDateTime;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolationException;
 
 @ControllerAdvice
 @Slf4j
@@ -23,6 +24,12 @@ public class GlobalExceptionHandler {
             .collect(Collectors.joining(", "));
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(generateExceptionResponse(error));
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<ExceptionResponse> handle(ConstraintViolationException ex) {
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST)
+            .body(generateExceptionResponse(ex));
     }
 
     @ExceptionHandler(EnumConversionException.class)

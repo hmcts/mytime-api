@@ -12,6 +12,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 
 import java.util.List;
 import java.util.stream.Collectors;
+import javax.validation.ConstraintViolationException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -54,6 +55,20 @@ class GlobalExceptionHandlerTest {
             .containsExactly(
                 HttpStatus.BAD_REQUEST,
                 expectedExceptionMessage);
+    }
+
+    @Test
+    void testHandleConstraintViolationException() {
+        ConstraintViolationException exception = new ConstraintViolationException(TEST_MESSAGE, null);
+
+        assertThat(globalExceptionHandler.handle(exception))
+            .as(ERROR_MESSAGE)
+            .extracting(
+                ResponseEntity::getStatusCode,
+                e -> e.getBody().getMessage())
+            .containsExactly(
+                HttpStatus.BAD_REQUEST,
+                TEST_MESSAGE);
     }
 
     @Test
