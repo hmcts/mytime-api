@@ -1,12 +1,12 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
 import org.junit.jupiter.api.Test;
+import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
 
 import static org.assertj.core.api.Assertions.assertThat;
-import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 class UserTest {
     private static final Integer ID = 1;
@@ -40,7 +40,7 @@ class UserTest {
     );
 
     @Test
-    void testCreationWithModel(){
+    void testCreationWithModel() {
 
         UserEntity newUserEnt = new UserEntity(USER_MODEL);
 
