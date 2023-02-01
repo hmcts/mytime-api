@@ -155,7 +155,7 @@ class LeaveRequestServiceTest {
         assertThat(leaveRequestService.getAllLeaveRequestsByEmployeeId(EMPLOYEE_ID))
             .as(LEAVE_REQUEST_MESSAGE)
             .hasSize(2)
-            .allSatisfy(r -> r.getEmployeeId().equals(EMPLOYEE_ID));
+            .allMatch(r -> r.getEmployeeId().equals(EMPLOYEE_ID));
     }
 
     @Test

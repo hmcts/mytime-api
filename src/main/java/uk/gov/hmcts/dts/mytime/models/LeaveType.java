@@ -10,7 +10,7 @@ public enum LeaveType {
     @JsonCreator
     public static LeaveType create(String value) {
         if (value == null) {
-            throw new IllegalArgumentException();
+            throw new IllegalArgumentException("Leave type cannot be null");
         }
         for (LeaveType type : values()) {
             if (value.equals(type.toString())) {
