@@ -1,7 +1,6 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -28,25 +27,6 @@ class UserTest {
         BONUS_ENTITLEMENT,
         MANAGER_ID
     );
-
-    private static final UserModel USER_MODEL = new UserModel(
-        ID,
-        FORENAME,
-        SURNAME,
-        DATE_JOINED,
-        HOURS,
-        BONUS_ENTITLEMENT,
-        MANAGER_ID
-    );
-
-    @Test
-    void testCreationWithModel() {
-
-        UserEntity newUserEnt = new UserEntity(USER_MODEL);
-
-        assertThat(newUserEnt.getForeName()).isEqualTo(USER_MODEL.getForeName());
-
-    }
 
     @Test
     void testCreation() {

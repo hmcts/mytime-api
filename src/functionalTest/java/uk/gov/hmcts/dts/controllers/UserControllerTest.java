@@ -18,7 +18,7 @@ import static org.springframework.http.HttpStatus.CREATED;
 @ExtendWith(SpringExtension.class)
 class UserControllerTest extends FunctionalTestBase {
 
-    private static final String PATH = "/User";
+    private static final String PATH = "/user";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     private static final int EMPLOYEE_ID1 = 1;
 
@@ -51,7 +51,7 @@ class UserControllerTest extends FunctionalTestBase {
 
         String jsonInput = OBJECT_MAPPER.writeValueAsString(saveNewUserUserModel);
 
-        var response = doPutRequest(PATH + "/saveUser", jsonInput);
+        var response = doPutRequest(PATH + "/save", jsonInput);
 
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
         assertThat(response.getBody().as(UserModel.class).getForeName()).isEqualTo(saveNewUserUserModel.getForeName());
@@ -66,7 +66,7 @@ class UserControllerTest extends FunctionalTestBase {
 
         String jsonInput = OBJECT_MAPPER.writeValueAsString(modelToUpdate);
 
-        var response = doPutRequest(PATH + "/saveUser", jsonInput);
+        var response = doPutRequest(PATH + "/save", jsonInput);
 
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
         assertThat(response.getBody().as(UserModel.class).getForeName()).isEqualTo("ShouldUpdateUser_forename");
@@ -88,7 +88,7 @@ class UserControllerTest extends FunctionalTestBase {
 
         String jsonInput = OBJECT_MAPPER.writeValueAsString(saveNewUserUserModel);
 
-        var response = doPutRequest(PATH + "/saveUser", jsonInput);
+        var response = doPutRequest(PATH + "/save", jsonInput);
 
         var savedUser = response.getBody().as(UserModel.class);
 
