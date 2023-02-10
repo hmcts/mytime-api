@@ -43,25 +43,25 @@ public class UserController {
     public ResponseEntity<UserModel> getUserById(@PathVariable("id") @Valid @Min(value = 1,
         message = "Invalid user ID") int id) {
 
-        return ok(userService.getById(id));
+        return ok(userService.getUserById(id));
     }
 
     @PutMapping(path = "/saveUser")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserModel userModel) {
 
-        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
+        return created(URI.create(StringUtils.EMPTY)).body(userService.createUser(userModel));
     }
 
     @PatchMapping(path = "/updateUser")
     public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserModel userModel) {
 
-        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
+        return created(URI.create(StringUtils.EMPTY)).body(userService.createUser(userModel));
     }
 
     @DeleteMapping(path = "/delete")
     public HttpStatus deleteUser(@RequestBody @Valid UserModel userModel) {
 
-        userService.deleteUser(userModel.getId());
+        userService.deleteUserById(userModel.getId());
 
         return HttpStatus.OK;
     }

@@ -16,7 +16,6 @@ import uk.gov.hmcts.dts.mytime.services.UserService;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
-import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.when;
@@ -44,7 +43,7 @@ class UserControllerTests {
         1
     );
 
-    private static final UserModel USER_MODEL = new UserModel(Optional.of(USER_ENTITY));
+    private static final UserModel USER_MODEL = new UserModel(USER_ENTITY);
     ObjectMapper objectMapper = new ObjectMapper();
 
     @MockBean
@@ -58,7 +57,7 @@ class UserControllerTests {
     @Test
     void shouldReturnUserObject() throws Exception {
 
-        when(userService.getById(1)).thenReturn(USER_MODEL);
+        when(userService.getUserById(1)).thenReturn(USER_MODEL);
 
         MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/1"))
             .andExpect(status().isOk())
