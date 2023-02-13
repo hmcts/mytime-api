@@ -31,7 +31,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 @ContextConfiguration(classes = UserController.class)
 class UserControllerTests {
 
-    private static final String BASE_URL = "/User";
+    private static final String BASE_URL = "/user";
 
     private static final UserEntity USER_ENTITY = new UserEntity(
         1,
@@ -72,7 +72,7 @@ class UserControllerTests {
     // region save user
     @Test
     void shouldReturnBadRequest() throws Exception {
-        MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/saveUser"))
+        MvcResult mvcResult = mockMvc.perform(get(BASE_URL + "/save"))
             .andExpect(status().isBadRequest())
             .andReturn();
 
@@ -86,7 +86,7 @@ class UserControllerTests {
 
         String requestJson = objectMapper.writeValueAsString(USER_MODEL);
 
-        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/saveUser")
+        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/save")
                             .content(requestJson)
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)).andExpect(status().is2xxSuccessful()).andReturn();
@@ -101,7 +101,7 @@ class UserControllerTests {
 
         String requestJson = objectMapper.writeValueAsString("");
 
-        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/saveUser")
+        MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/save")
                             .content(requestJson)
                             .contentType(MediaType.APPLICATION_JSON)
                             .accept(MediaType.APPLICATION_JSON)).andExpect(status().is4xxClientError()).andReturn();
@@ -118,7 +118,7 @@ class UserControllerTests {
 
         String requestJson = objectMapper.writeValueAsString(USER_MODEL);
 
-        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/updateUser")
+        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/update")
                                                   .content(requestJson)
                                                   .contentType(MediaType.APPLICATION_JSON)
                                                   .accept(MediaType.APPLICATION_JSON))
@@ -135,7 +135,7 @@ class UserControllerTests {
 
         String requestJson = objectMapper.writeValueAsString("");
 
-        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/updateUser")
+        MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/update")
                                                   .content(requestJson)
                                                   .contentType(MediaType.APPLICATION_JSON)
                                                   .accept(MediaType.APPLICATION_JSON))
