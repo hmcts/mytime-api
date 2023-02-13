@@ -6,6 +6,7 @@ def type = "java"
 def product = "my-time"
 def component = "api"
 
+
 withPipeline(type, product, component) {
 
   onMaster() {
