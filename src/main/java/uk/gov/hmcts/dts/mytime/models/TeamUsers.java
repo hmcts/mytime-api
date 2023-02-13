@@ -23,11 +23,7 @@ public class TeamUsers {
 
     public TeamUsers(uk.gov.hmcts.dts.mytime.entities.TeamUsers entity) {
         this.id = entity.getId();
-        if (entity.getTeamId() == null || entity.getUserId() == null) {
-            throw new IllegalArgumentException("TeamId and UserId must not be null");
-        } else {
-            this.teamId = entity.getTeamId();
-            this.userId = entity.getUserId();
-        }
+        this.teamId = entity.getTeamId();
+        this.userId = entity.getUserId();
     }
 }

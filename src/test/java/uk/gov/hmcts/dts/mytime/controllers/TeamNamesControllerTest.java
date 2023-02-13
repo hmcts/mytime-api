@@ -95,4 +95,19 @@ class TeamNamesControllerTest {
                 List.of(RESULT)
             );
     }
+
+    @Test
+    void shouldGetParentTeamName() {
+        when(teamNamesService.getParentTeamNameById(ID)).thenReturn(RESULT);
+
+        assertThat(teamNamesController.getParentTeamName(ID))
+            .as(ASSERTION_MESSAGE)
+            .extracting(
+                r -> r.getStatusCode(),
+                r -> r.getBody())
+            .containsExactly(
+                HttpStatus.OK,
+                RESULT
+            );
+    }
 }

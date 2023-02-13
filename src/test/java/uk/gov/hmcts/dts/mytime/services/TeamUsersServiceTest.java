@@ -44,6 +44,8 @@ class TeamUsersServiceTest {
     private static final uk.gov.hmcts.dts.mytime.entities.UserEntity USER_ENTITY =
         new uk.gov.hmcts.dts.mytime.entities.UserEntity();
 
+    private static final String TEAM_MESSAGE = "Team and User with ID '" + ID + "' does not exist";
+
     @Mock
     private TeamUsersRepository teamUsersRepository;
 
@@ -85,13 +87,26 @@ class TeamUsersServiceTest {
     }
 
     @Test
+    void shouldThrowNotFoundExceptionTeamNotExists() {
+        when(userRepo.findById(ENTITY.getUserId())).thenReturn(Optional.of(USER_ENTITY));
+        when(teamNamesRepository.findById(TEAM_ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> teamUsersService.createTeamUser(TEAM_USERS))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Team with ID '" + ENTITY.getTeamId() + "' does not exist");
+
+        verifyNoMoreInteractions(teamUsersRepository);
+    }
+
+    @Test
     void shouldThrowNotFoundExceptionCreateTeamNames() {
         when(userRepo.findById(ENTITY.getUserId())).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teamUsersService.createTeamUser(TEAM_USERS))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("User with ID '2' does not exist");
+            .hasMessage("User with ID '" + ENTITY.getUserId() + "' does not exist");
 
         verifyNoMoreInteractions(teamUsersRepository);
     }
@@ -116,13 +131,23 @@ class TeamUsersServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionIfGetLeaveRequestNotFound() {
+    void shouldThrowExceptionDeleteTeamName() {
+        when(teamUsersRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> teamUsersService.deleteTeamUserById(ID))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(TEAM_MESSAGE);
+    }
+
+    @Test
+    void shouldThrowExceptionIfGetTeamUserNotFound() {
         when(teamUsersRepository.findById(ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teamUsersService.getTeamUserById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Team and User with ID '" + ID + "' does not exist");
+            .hasMessage(TEAM_MESSAGE);
     }
 
     @Test
@@ -131,8 +156,7 @@ class TeamUsersServiceTest {
 
         assertThat(teamUsersService.getAllTeamUsers())
             .as(TEAM_USERS_MESSAGE)
-            .hasSize(2)
-            .allSatisfy(r -> r.getId().equals(ID));
+            .hasSize(2);
     }
 
     @Test

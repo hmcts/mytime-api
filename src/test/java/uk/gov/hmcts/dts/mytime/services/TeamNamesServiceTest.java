@@ -126,8 +126,7 @@ class TeamNamesServiceTest {
 
         assertThat(teamNamesService.getAllTeamNames())
             .as(TEAM_NAMES_MESSAGE)
-            .hasSize(2)
-            .allSatisfy(r -> r.getId().equals(ID));
+            .hasSize(2);
     }
 
     @Test
