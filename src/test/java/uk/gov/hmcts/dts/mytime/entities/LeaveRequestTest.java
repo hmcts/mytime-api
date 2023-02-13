@@ -78,18 +78,18 @@ class LeaveRequestTest {
     @Test
     void testHashCodeIfSameObject() {
         LeaveRequest anotherLeaveRequest = LEAVE_REQUEST;
-        assertThat(LEAVE_REQUEST.hashCode())
+        assertThat(LEAVE_REQUEST)
             .as("Hashcode should equal")
-            .isEqualTo(anotherLeaveRequest.hashCode());
+            .hasSameHashCodeAs(anotherLeaveRequest);
     }
 
     @Test
     void testHashCodeIfOnlyIdFieldDifferent() {
         LeaveRequest anotherLeaveRequest = new LeaveRequest(200, EMPLOYEE_ID, APPROVER_ID, TYPE, STATUS, START_DATE,
                                                             END_DATE, REQUEST_COMMENT, APPROVER_COMMENT);
-        assertThat(LEAVE_REQUEST.hashCode())
+        assertThat(LEAVE_REQUEST)
             .as("Hashcode should equal")
-            .isEqualTo(anotherLeaveRequest.hashCode());
+            .hasSameHashCodeAs(anotherLeaveRequest);
     }
 
     @Test
