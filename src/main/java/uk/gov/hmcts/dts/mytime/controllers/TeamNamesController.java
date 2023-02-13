@@ -45,7 +45,7 @@ public class TeamNamesController {
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Integer> deleteTeamNames(
-        @Valid @Min(value = 1, message = "Leave request ID must be greater than zero") @PathVariable Integer id
+        @Valid @Min(value = 1, message = "Team ID must be greater than zero") @PathVariable Integer id
     ) {
         teamNamesService.deleteTeamById(id);
         return ok(id);

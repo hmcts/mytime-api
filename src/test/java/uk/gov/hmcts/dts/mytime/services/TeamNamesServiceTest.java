@@ -103,6 +103,14 @@ class TeamNamesServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionIfGetParentByIdNotFound() {
+        assertThatThrownBy(() -> teamNamesService.getParentTeamNameById(ID))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Parent Team with ID '" + ID + "' does not exist");
+    }
+
+    @Test
     void shouldDeleteTeamName() {
         when(teamNamesRepository.findById(ID)).thenReturn(Optional.of(ENTITY));
 
@@ -111,7 +119,15 @@ class TeamNamesServiceTest {
     }
 
     @Test
-    void shouldThrowExceptionIfGetLeaveRequestNotFound() {
+    void shouldThrowExceptionDeleteTeamNotFound() {
+        assertThatThrownBy(() -> teamNamesService.deleteTeamById(ID))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Team with ID '" + ID + "' does not exist");
+    }
+
+    @Test
+    void shouldThrowExceptionIfGetTeamByIdNotFound() {
         when(teamNamesRepository.findById(ID)).thenReturn(Optional.empty());
 
         assertThatThrownBy(() -> teamNamesService.getTeamNameById(ID))
