@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.dts.mytime.models.TeamNames;
 import uk.gov.hmcts.dts.mytime.services.TeamNamesService;
 
@@ -17,7 +19,6 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
-@SuppressWarnings("PMD.JUnitAssertionsShouldIncludeMessage")
 class TeamNamesControllerTest {
     private static final Integer ID = 123;
     private static final String ASSERTION_MESSAGE = "Team Name does not match";
@@ -43,8 +44,9 @@ class TeamNamesControllerTest {
         assertThat(teamNamesController.createTeamNames(TEAM_NAMES))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.CREATED,
                 RESULT
@@ -58,8 +60,9 @@ class TeamNamesControllerTest {
         assertThat(teamNamesController.getTeamName(ID))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 RESULT
@@ -73,8 +76,9 @@ class TeamNamesControllerTest {
         assertThat(teamNamesController.deleteTeamNames(ID))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 ID
@@ -88,8 +92,9 @@ class TeamNamesControllerTest {
         assertThat(teamNamesController.getAllTeamNames())
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 List.of(RESULT)
@@ -103,8 +108,9 @@ class TeamNamesControllerTest {
         assertThat(teamNamesController.getParentTeamName(ID))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 RESULT

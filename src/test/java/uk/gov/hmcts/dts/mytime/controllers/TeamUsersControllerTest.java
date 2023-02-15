@@ -6,7 +6,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import uk.gov.hmcts.dts.mytime.models.TeamUsers;
 import uk.gov.hmcts.dts.mytime.services.TeamUsersService;
 
@@ -42,8 +44,9 @@ class TeamUsersControllerTest {
         assertThat(teamUsersController.createTeamUsers(TEAM_USERS))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.CREATED,
                 RESULT
@@ -57,8 +60,9 @@ class TeamUsersControllerTest {
         assertThat(teamUsersController.getTeamUsers(ID))
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 RESULT
@@ -72,8 +76,9 @@ class TeamUsersControllerTest {
         assertThat(teamUsersController.deleteTeamUsers(ID))
                 .as(ASSERTION_MESSAGE)
                 .extracting(
-                        r -> r.getStatusCode(),
-                        r -> r.getBody())
+                    ResponseEntity::getStatusCode,
+                    HttpEntity::getBody
+                )
                 .containsExactly(
                         HttpStatus.OK,
                         ID);
@@ -86,8 +91,9 @@ class TeamUsersControllerTest {
         assertThat(teamUsersController.getAllTeamUsers())
             .as(ASSERTION_MESSAGE)
             .extracting(
-                r -> r.getStatusCode(),
-                r -> r.getBody())
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
             .containsExactly(
                 HttpStatus.OK,
                 List.of(RESULT)
