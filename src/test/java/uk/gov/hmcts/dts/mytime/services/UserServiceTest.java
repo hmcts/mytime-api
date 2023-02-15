@@ -17,6 +17,7 @@ import java.time.ZoneOffset;
 import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatCode;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.mockito.Mockito.when;
 
@@ -25,10 +26,10 @@ import static org.mockito.Mockito.when;
 class UserServiceTest {
 
     private static final Integer EMPLOYEE_ID = 1;
-
     private static final UserEntity USER_ENTITY = new UserEntity();
-
     private static final UserModel USER_MODEL = new UserModel();
+    private static final String USERS_MESSAGE = "User does not match";
+
     @Mock
     private UserRepo userRepo;
 
@@ -55,38 +56,43 @@ class UserServiceTest {
 
     @Test
     void shouldGetUserById() {
-        when(userRepo.existsById(EMPLOYEE_ID)).thenReturn(Boolean.TRUE);
         when(userRepo.findById(EMPLOYEE_ID)).thenReturn(Optional.of(USER_ENTITY));
 
-        UserModel res = userService.getById(EMPLOYEE_ID);
-
-        assertThat(res.getId()).isEqualTo(EMPLOYEE_ID);
+        assertThat(userService.getUserById(EMPLOYEE_ID))
+            .as(USERS_MESSAGE)
+            .isNotNull()
+            .extracting(UserModel::getId)
+            .isEqualTo(USER_ENTITY.getId());
     }
 
     @Test
     void shouldThrowNotFoundExceptionGetById() {
-        when(userRepo.existsById(EMPLOYEE_ID)).thenReturn(Boolean.FALSE);
-
-        assertThatThrownBy(() -> userService.getById(EMPLOYEE_ID))
+        assertThatThrownBy(() -> userService.getUserById(EMPLOYEE_ID))
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("No user found");
+            .hasMessage("User with ID '1' does not exist");
     }
 
     @Test
     void shouldSaveUser() {
         when(userRepo.save(USER_ENTITY)).thenReturn(USER_ENTITY);
 
-        UserModel res = userService.saveUser(USER_MODEL);
+        UserModel res = userService.createUser(USER_MODEL);
 
         assertThat(res.getId()).isEqualTo(EMPLOYEE_ID);
     }
 
     @Test
     void shouldThrowNotFoundExceptionDelete() {
-        when(userRepo.existsById(EMPLOYEE_ID)).thenReturn(Boolean.FALSE);
-
-        assertThatThrownBy(() -> userService.deleteUser(EMPLOYEE_ID))
+        assertThatThrownBy(() -> userService.deleteUserById(EMPLOYEE_ID))
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("No user found to delete");
+            .hasMessage("User with ID '1' does not exist");
+    }
+
+    @Test
+    void shouldDeleteTeamName() {
+        when(userRepo.findById(EMPLOYEE_ID)).thenReturn(Optional.of(USER_ENTITY));
+
+        assertThatCode(() -> userService.deleteUserById(EMPLOYEE_ID))
+            .doesNotThrowAnyException();
     }
 }

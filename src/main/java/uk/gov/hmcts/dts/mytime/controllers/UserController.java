@@ -1,7 +1,6 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -26,7 +25,7 @@ import static org.springframework.http.ResponseEntity.ok;
 
 @RestController
 @RequestMapping(
-    path = "/User",
+    path = "/user",
     produces = {MediaType.APPLICATION_JSON_VALUE}
 )
 @Validated
@@ -34,7 +33,6 @@ public class UserController {
 
     private final UserService userService;
 
-    @Autowired
     public UserController(UserService userService) {
         this.userService = userService;
     }
@@ -43,25 +41,25 @@ public class UserController {
     public ResponseEntity<UserModel> getUserById(@PathVariable("id") @Valid @Min(value = 1,
         message = "Invalid user ID") int id) {
 
-        return ok(userService.getById(id));
+        return ok(userService.getUserById(id));
     }
 
-    @PutMapping(path = "/saveUser")
+    @PutMapping(path = "/save")
     public ResponseEntity<UserModel> saveUser(@RequestBody @Valid UserModel userModel) {
 
-        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
+        return created(URI.create(StringUtils.EMPTY)).body(userService.createUser(userModel));
     }
 
-    @PatchMapping(path = "/updateUser")
+    @PatchMapping(path = "/update")
     public ResponseEntity<UserModel> updateUser(@RequestBody @Valid UserModel userModel) {
 
-        return created(URI.create(StringUtils.EMPTY)).body(userService.saveUser(userModel));
+        return created(URI.create(StringUtils.EMPTY)).body(userService.createUser(userModel));
     }
 
     @DeleteMapping(path = "/delete")
     public HttpStatus deleteUser(@RequestBody @Valid UserModel userModel) {
 
-        userService.deleteUser(userModel.getId());
+        userService.deleteUserById(userModel.getId());
 
         return HttpStatus.OK;
     }

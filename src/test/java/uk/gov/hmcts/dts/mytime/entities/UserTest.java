@@ -1,7 +1,6 @@
 package uk.gov.hmcts.dts.mytime.entities;
 
 import org.junit.jupiter.api.Test;
-import uk.gov.hmcts.dts.mytime.models.UserModel;
 
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
@@ -20,55 +19,34 @@ class UserTest {
     private static final Integer MANAGER_ID = 1;
     private static final Integer MANAGER_ID2 = 2;
     private static final UserEntity USER_ENTITY = new UserEntity(
-        ID,
-        FORENAME,
-        SURNAME,
-        DATE_JOINED,
-        HOURS,
-        BONUS_ENTITLEMENT,
-        MANAGER_ID
-    );
-
-    private static final UserModel USER_MODEL = new UserModel(
-        ID,
-        FORENAME,
-        SURNAME,
-        DATE_JOINED,
-        HOURS,
-        BONUS_ENTITLEMENT,
-        MANAGER_ID
-    );
-
-    @Test
-    void testCreationWithModel() {
-
-        UserEntity newUserEnt = new UserEntity(USER_MODEL);
-
-        assertThat(newUserEnt.getForeName()).isEqualTo(USER_MODEL.getForeName());
-
-    }
+            ID,
+            FORENAME,
+            SURNAME,
+            DATE_JOINED,
+            HOURS,
+            BONUS_ENTITLEMENT,
+            MANAGER_ID);
 
     @Test
     void testCreation() {
         assertThat(USER_ENTITY)
-            .as("Value does not match")
-            .extracting(
-                UserEntity::getId,
-                UserEntity::getForeName,
-                UserEntity::getSurName,
-                UserEntity::getStartDate,
-                UserEntity::getContractHours,
-                UserEntity::getBonusEntitlement,
-                UserEntity::getManagerId
-            ).containsExactly(
-                ID,
-                FORENAME,
-                SURNAME,
-                DATE_JOINED,
-                HOURS,
-                BONUS_ENTITLEMENT,
-                MANAGER_ID
-            );
+                .as("Value does not match")
+                .extracting(
+                        UserEntity::getId,
+                        UserEntity::getForeName,
+                        UserEntity::getSurName,
+                        UserEntity::getStartDate,
+                        UserEntity::getContractHours,
+                        UserEntity::getBonusEntitlement,
+                        UserEntity::getManagerId)
+                .containsExactly(
+                        ID,
+                        FORENAME,
+                        SURNAME,
+                        DATE_JOINED,
+                        HOURS,
+                        BONUS_ENTITLEMENT,
+                        MANAGER_ID);
     }
 
     @Test
@@ -76,75 +54,74 @@ class UserTest {
         UserEntity anotherUserEntity = USER_ENTITY;
 
         assertThat(USER_ENTITY.equals(anotherUserEntity))
-            .as("Equals should equal")
-            .isTrue();
+                .as("Equals should equal")
+                .isTrue();
     }
 
     @Test
     void testEqualsIfOnlyIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(
-            ID2,
-            FORENAME,
-            SURNAME,
-            DATE_JOINED,
-            HOURS,
-            BONUS_ENTITLEMENT,
-            MANAGER_ID
-        );
+        UserEntity anotherUserEntity = new UserEntity(
+                ID2,
+                FORENAME,
+                SURNAME,
+                DATE_JOINED,
+                HOURS,
+                BONUS_ENTITLEMENT,
+                MANAGER_ID);
 
         assertThat(USER_ENTITY.equals(anotherUserEntity))
-            .as("Equals should equal")
-            .isTrue();
+                .as("Equals should equal")
+                .isTrue();
     }
 
     @Test
     void testNotEqualsIfNonIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(ID,
-                                                       FORENAME,
-                                                       SURNAME,
-                                                       DATE_JOINED,
-                                                       HOURS,
-                                                       BONUS_ENTITLEMENT,
-                                                       MANAGER_ID2);
+        UserEntity anotherUserEntity = new UserEntity(ID,
+                FORENAME,
+                SURNAME,
+                DATE_JOINED,
+                HOURS,
+                BONUS_ENTITLEMENT,
+                MANAGER_ID2);
 
         assertThat(USER_ENTITY.equals(anotherUserEntity))
-            .as("Equals should not equal")
-            .isFalse();
+                .as("Equals should not equal")
+                .isFalse();
     }
 
     @Test
     void testHashCodeIfSameObject() {
         UserEntity anotherUserEntity = USER_ENTITY;
         assertThat(USER_ENTITY.hashCode())
-            .as("Hashcode should equal")
-            .hasSameHashCodeAs(anotherUserEntity.hashCode());
+                .as("Hashcode should equal")
+                .hasSameHashCodeAs(anotherUserEntity.hashCode());
     }
 
     @Test
     void testHashCodeIfOnlyIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(ID2,
-                                                       FORENAME,
-                                                       SURNAME,
-                                                       DATE_JOINED,
-                                                       HOURS,
-                                                       BONUS_ENTITLEMENT,
-                                                       MANAGER_ID);
+        UserEntity anotherUserEntity = new UserEntity(ID2,
+                FORENAME,
+                SURNAME,
+                DATE_JOINED,
+                HOURS,
+                BONUS_ENTITLEMENT,
+                MANAGER_ID);
         assertThat(USER_ENTITY.hashCode())
-            .as("Hashcode should equal")
-            .hasSameHashCodeAs(anotherUserEntity.hashCode());
+                .as("Hashcode should equal")
+                .hasSameHashCodeAs(anotherUserEntity.hashCode());
     }
 
     @Test
     void testHashCodeIfNonIdFieldDifferent() {
-        UserEntity anotherUserEntity  = new UserEntity(ID,
-                                                       FORENAME,
-                                                       SURNAME,
-                                                       DATE_JOINED,
-                                                       HOURS,
-                                                       BONUS_ENTITLEMENT,
-                                                       MANAGER_ID2);
+        UserEntity anotherUserEntity = new UserEntity(ID,
+                FORENAME,
+                SURNAME,
+                DATE_JOINED,
+                HOURS,
+                BONUS_ENTITLEMENT,
+                MANAGER_ID2);
         assertThat(USER_ENTITY.hashCode())
-            .as("Hashcode should not equal")
-            .isNotEqualTo(anotherUserEntity.hashCode());
+                .as("Hashcode should not equal")
+                .isNotEqualTo(anotherUserEntity.hashCode());
     }
 }

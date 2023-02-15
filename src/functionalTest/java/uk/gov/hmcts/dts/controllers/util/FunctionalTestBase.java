@@ -22,7 +22,7 @@ public class FunctionalTestBase {
 
     @BeforeEach
     public void setUp() {
-        RestAssured.baseURI = "http://localhost:4000";
+        RestAssured.baseURI = "http://localhost:4001";
     }
 
     protected Response doGetRequest(final String path) {
