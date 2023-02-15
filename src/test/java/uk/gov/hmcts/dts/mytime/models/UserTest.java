@@ -54,4 +54,30 @@ class UserTest {
                 MANAGER_ID
             );
     }
+
+    @Test
+    void testCreationWithBlankEntity() {
+        UserModel userModel = new UserModel(Optional.of(new UserEntity()));
+
+        assertThat(userModel)
+            .as("Value does not match")
+            .extracting(
+                UserModel::getId,
+                UserModel::getForeName,
+                UserModel::getSurName,
+                UserModel::getStartDate,
+                UserModel::getContractHours,
+                UserModel::getBonusEntitlement,
+                UserModel::getManagerId
+            )
+            .containsExactly(
+                0,
+                "",
+                "",
+                LocalDateTime.now(),
+                0,
+                0,
+                0
+            );
+    }
 }
