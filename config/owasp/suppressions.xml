@@ -14,6 +14,7 @@
     <notes>
     </notes>
     <cve>CVE-2022-1471</cve>
+    <cve>CVE-2022-45688</cve>
   </suppress>
   <!--End of temporary suppression section -->
 </suppressions>
