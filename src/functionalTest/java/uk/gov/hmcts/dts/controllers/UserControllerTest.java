@@ -2,24 +2,24 @@ package uk.gov.hmcts.dts.controllers;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import java.time.LocalDateTime;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.dts.controllers.util.FunctionalTestBase;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
+
+import java.time.LocalDateTime;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("PMD.TooManyMethods")
 class UserControllerTest extends FunctionalTestBase {
     private static final String PATH = "/user";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-
-
     private static final Integer ID = 97;
     private static final String FORENAME = "Functional";
     private static final String SURNAME = "Test";
@@ -36,6 +36,7 @@ class UserControllerTest extends FunctionalTestBase {
         BONUS_ENTITLEMENT,
         MANAGER_ID
     );
+
     @BeforeAll
     static void setup() {
         OBJECT_MAPPER.findAndRegisterModules();
@@ -50,10 +51,10 @@ class UserControllerTest extends FunctionalTestBase {
 
         UserModel savedUser = response.getBody().as(UserModel.class);
         assertThat(savedUser.getForeName()).isEqualTo(FORENAME);
-
     }
+
     @Test
-    void shouldGetUserByID(){
+    void shouldGetUserByID() {
         var path  = PATH + "/" + 2;
         var response = doGetRequest(path);
         assertThat(response.statusCode())
@@ -75,7 +76,7 @@ class UserControllerTest extends FunctionalTestBase {
     }
 
     @Test
-    void shouldDeleteUser() throws JsonProcessingException{
+    void shouldDeleteUser() throws JsonProcessingException {
         var path = PATH + "/delete";
         var jsonObj = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
         var response = doDeleteRequest(path, jsonObj);
