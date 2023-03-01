@@ -62,4 +62,23 @@ class UserControllerTest extends FunctionalTestBase {
         UserModel user = response.getBody().as(UserModel.class);
         assertThat(user.getForeName()).isEqualTo(FORENAME);
     }
+
+    @Test
+    void shouldUpdateUser() throws JsonProcessingException {
+        var updatedUser = USER_MODEL;
+        var path = PATH + "/update";
+        updatedUser.setForeName("Updated Forename");
+        var jsonObj = OBJECT_MAPPER.writeValueAsString(updatedUser);
+        var response = doPutRequest(path, jsonObj);
+        var returnedUser = response.getBody().as(UserModel.class);
+        assertThat(returnedUser.getForeName()).isEqualTo(updatedUser.getForeName());
+    }
+
+    @Test
+    void shouldDeleteUser() throws JsonProcessingException{
+        var path = PATH + "/delete";
+        var jsonObj = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
+        var response = doDeleteRequest(path, jsonObj);
+        assertThat(response.statusCode()).isEqualTo(OK.value());
+    }
 }
