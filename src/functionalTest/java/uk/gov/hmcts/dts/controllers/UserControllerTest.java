@@ -55,22 +55,24 @@ class UserControllerTest extends FunctionalTestBase {
 
     @Test
     void shouldGetUserByID() {
-        var path  = PATH + "/" + 2;
+        var path  = PATH + "/2";
         var response = doGetRequest(path);
         assertThat(response.statusCode())
             .isEqualTo(OK.value());
 
         UserModel user = response.getBody().as(UserModel.class);
-        assertThat(user.getForeName()).isEqualTo(FORENAME);
+        assertThat(user.getForeName()).isEqualTo("Ida");
     }
 
     @Test
     void shouldUpdateUser() throws JsonProcessingException {
-        var updatedUser = USER_MODEL;
+        UserModel updatedUser = OBJECT_MAPPER.readValue(
+            OBJECT_MAPPER.writeValueAsString(USER_MODEL), UserModel.class
+        );
         var path = PATH + "/update";
         updatedUser.setForeName("Updated Forename");
         var jsonObj = OBJECT_MAPPER.writeValueAsString(updatedUser);
-        var response = doPutRequest(path, jsonObj);
+        var response = doPatchRequest(path, jsonObj);
         var returnedUser = response.getBody().as(UserModel.class);
         assertThat(returnedUser.getForeName()).isEqualTo(updatedUser.getForeName());
     }
@@ -78,7 +80,9 @@ class UserControllerTest extends FunctionalTestBase {
     @Test
     void shouldDeleteUser() throws JsonProcessingException {
         var path = PATH + "/delete";
-        var jsonObj = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
+        UserModel userToDelete = new UserModel();
+        userToDelete.setId(5);
+        var jsonObj = OBJECT_MAPPER.writeValueAsString(userToDelete);
         var response = doDeleteRequest(path, jsonObj);
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
