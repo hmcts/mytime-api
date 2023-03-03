@@ -29,6 +29,20 @@ public class TeamNamesService {
         return new TeamNames(teamNamesRepository.save(newTeamNamesEntity));
     }
 
+    @Transactional
+    public TeamNames updateTeam(TeamNames teamNames) {
+        uk.gov.hmcts.dts.mytime.entities.TeamNames newTeamNamesEntity =
+            new uk.gov.hmcts.dts.mytime.entities.TeamNames(teamNames.getId(), teamNames.getParentTeamId(),
+                                                           teamNames.getTeamName());
+
+        teamNamesRepository.findById(teamNames.getId())
+            .map(TeamNames::new)
+            .orElseThrow(() -> new NotFoundException(String.format("Team with ID '%s' does not exist",
+                                                                   teamNames.getId())));
+
+        return new TeamNames(teamNamesRepository.save(newTeamNamesEntity));
+    }
+
     public TeamNames getTeamNameById(Integer id) {
         return teamNamesRepository.findById(id)
             .map(TeamNames::new)
@@ -36,12 +50,22 @@ public class TeamNamesService {
     }
 
     public TeamNames getParentTeamNameById(Integer id) {
-        return teamNamesRepository.findByParentTeamId(id)
+        TeamNames tn = teamNamesRepository.findById(id)
+            .map(TeamNames::new)
+            .orElseThrow(() -> new NotFoundException(String.format("Team with ID '%s' does not exist", id)));
+
+        if (tn.getParentTeamId() == null) {
+            throw new NotFoundException(
+                String.format("'%s' does not have a parent team.", tn.getTeamName()));
+        }
+
+        return teamNamesRepository.findById(tn.getParentTeamId())
             .map(TeamNames::new)
             .orElseThrow(() -> new NotFoundException(
-                String.format("Parent Team with ID '%s' does not exist", id)));
+                String.format("Parent Team with ID '%s' does not exist", tn.getParentTeamId())));
     }
 
+    @Transactional
     public void deleteTeamById(Integer id) {
         teamNamesRepository.findById(id)
             .ifPresentOrElse(

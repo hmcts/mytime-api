@@ -30,6 +30,7 @@ class TeamNamesServiceTest {
     private static final String TEAM_NAME = "Team Name 1";
     private static final String TEAM_NAME2 = "Team Name 2";
     private static final String EXCEPTION_MESSAGE = "Exception does not match";
+    private static final String TEAM_MESSAGE = "Team with ID '" + ID + "' does not exist";
 
     private static final TeamNames TEAM_NAMES = new TeamNames();
     private static final uk.gov.hmcts.dts.mytime.entities.TeamNames ENTITY =
@@ -94,7 +95,8 @@ class TeamNamesServiceTest {
 
     @Test
     void shouldGetParentTeamNameById() {
-        when(teamNamesRepository.findByParentTeamId(ENTITY.getId())).thenReturn(Optional.of(ENTITY2));
+        when(teamNamesRepository.findById(ID)).thenReturn(Optional.of(ENTITY));
+        when(teamNamesRepository.findById(ID2)).thenReturn(Optional.of(ENTITY2));
 
         assertThat(teamNamesService.getParentTeamNameById(ENTITY.getId()))
             .as(TEAM_NAMES_MESSAGE)
@@ -108,7 +110,16 @@ class TeamNamesServiceTest {
         assertThatThrownBy(() -> teamNamesService.getParentTeamNameById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Parent Team with ID '" + ID + "' does not exist");
+            .hasMessage(TEAM_MESSAGE);
+    }
+
+    @Test
+    void shouldThrowExceptionIfTeamHasNoParent() {
+        when(teamNamesRepository.findById(ID2)).thenReturn(Optional.of(ENTITY2));
+        assertThatThrownBy(() -> teamNamesService.getParentTeamNameById(ID2))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("'Team Name 2' does not have a parent team.");
     }
 
     @Test
@@ -124,7 +135,7 @@ class TeamNamesServiceTest {
         assertThatThrownBy(() -> teamNamesService.deleteTeamById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Team with ID '" + ID + "' does not exist");
+            .hasMessage(TEAM_MESSAGE);
     }
 
     @Test
@@ -134,7 +145,7 @@ class TeamNamesServiceTest {
         assertThatThrownBy(() -> teamNamesService.getTeamNameById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Team with ID '1' does not exist");
+            .hasMessage(TEAM_MESSAGE);
     }
 
     @Test
