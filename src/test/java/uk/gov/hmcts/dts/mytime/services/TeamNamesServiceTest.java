@@ -114,6 +114,16 @@ class TeamNamesServiceTest {
     }
 
     @Test
+    void shouldThrowExceptionIfParentNotFound() {
+        when(teamNamesRepository.findById(ID)).thenReturn(Optional.of(ENTITY));
+        when(teamNamesRepository.findById(ID2)).thenReturn(Optional.empty());
+        assertThatThrownBy(() -> teamNamesService.getParentTeamNameById(ID))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Parent Team with ID '" + ID2 + "' does not exist");
+    }
+
+    @Test
     void shouldThrowExceptionIfTeamHasNoParent() {
         when(teamNamesRepository.findById(ID2)).thenReturn(Optional.of(ENTITY2));
         assertThatThrownBy(() -> teamNamesService.getParentTeamNameById(ID2))

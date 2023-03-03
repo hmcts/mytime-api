@@ -5,9 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import uk.gov.hmcts.dts.mytime.exceptions.DuplicatedItemException;
 import uk.gov.hmcts.dts.mytime.exceptions.NotFoundException;
-import uk.gov.hmcts.dts.mytime.models.TeamNames;
 import uk.gov.hmcts.dts.mytime.models.TeamUsers;
-import uk.gov.hmcts.dts.mytime.models.UserModel;
 import uk.gov.hmcts.dts.mytime.repository.TeamNamesRepository;
 import uk.gov.hmcts.dts.mytime.repository.TeamUsersRepository;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
@@ -25,22 +23,20 @@ public class TeamUsersService {
 
     @Transactional
     public TeamUsers createTeamUser(TeamUsers teamUser) {
-        uk.gov.hmcts.dts.mytime.entities.TeamUsers newTeamUsersEntity = new uk.gov.hmcts.dts.mytime.entities.TeamUsers(
-                teamUser.getTeamId(), teamUser.getUserId());
-
         // Check if user exists
-        userRepository.findById(teamUser.getUserId())
-                .map(UserModel::new)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("User with ID '%s' does not exist",
-                                teamUser.getUserId())));
+        if (userRepository.findById(teamUser.getUserId()).stream()
+            .noneMatch(r -> r.getId().equals(teamUser.getUserId()))) {
+            throw new NotFoundException(String.format("User with ID '%s' does not exist", teamUser.getUserId()));
+        }
 
         // Check if team exists
-        teamNamesRepository.findById(teamUser.getTeamId())
-                .map(TeamNames::new)
-                .orElseThrow(() -> new NotFoundException(
-                        String.format("Team with ID '%s' does not exist",
-                                teamUser.getTeamId())));
+        if (teamNamesRepository.findById(teamUser.getTeamId()).stream()
+            .noneMatch(r -> r.getId().equals(teamUser.getTeamId()))) {
+            throw new NotFoundException(String.format("Team with ID '%s' does not exist", teamUser.getTeamId()));
+        }
+
+        uk.gov.hmcts.dts.mytime.entities.TeamUsers newTeamUsersEntity = new uk.gov.hmcts.dts.mytime.entities.TeamUsers(
+            teamUser.getTeamId(), teamUser.getUserId());
 
         // Check if user already member of team
         if (teamUsersRepository.findByTeamIdAndUserId(teamUser.getTeamId(), teamUser.getUserId()).stream()

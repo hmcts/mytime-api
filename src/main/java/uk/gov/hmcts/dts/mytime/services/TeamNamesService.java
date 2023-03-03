@@ -14,6 +14,7 @@ import java.util.List;
 public class TeamNamesService {
     @Autowired
     private TeamNamesRepository teamNamesRepository;
+    private static final String TEAM_MESSAGE = "Team with ID '%s' does not exist";
 
     @Transactional
     public TeamNames createTeam(TeamNames teamNames) {
@@ -33,7 +34,7 @@ public class TeamNamesService {
         // Check if team being updated actually exists
         if (teamNamesRepository.findById(teamNames.getId()).stream()
             .noneMatch(r -> r.getId().equals(teamNames.getId()))) {
-            throw new NotFoundException(String.format("Team with ID '%s' does not exist", teamNames.getId()));
+            throw new NotFoundException(String.format(TEAM_MESSAGE, teamNames.getId()));
         }
 
         uk.gov.hmcts.dts.mytime.entities.TeamNames newTeamNamesEntity =
@@ -46,13 +47,13 @@ public class TeamNamesService {
     public TeamNames getTeamNameById(Integer id) {
         return teamNamesRepository.findById(id)
             .map(TeamNames::new)
-            .orElseThrow(() -> new NotFoundException(String.format("Team with ID '%s' does not exist", id)));
+            .orElseThrow(() -> new NotFoundException(String.format(TEAM_MESSAGE, id)));
     }
 
     public TeamNames getParentTeamNameById(Integer id) {
         TeamNames tn = teamNamesRepository.findById(id)
             .map(TeamNames::new)
-            .orElseThrow(() -> new NotFoundException(String.format("Team with ID '%s' does not exist", id)));
+            .orElseThrow(() -> new NotFoundException(String.format(TEAM_MESSAGE, id)));
 
         if (tn.getParentTeamId() == null) {
             throw new NotFoundException(
@@ -71,7 +72,7 @@ public class TeamNamesService {
             .ifPresentOrElse(
                 o -> teamNamesRepository.deleteById(id),
                 () -> {
-                    throw new NotFoundException(String.format("Team with ID '%s' does not exist", id));
+                    throw new NotFoundException(String.format(TEAM_MESSAGE, id));
                 });
     }
 
