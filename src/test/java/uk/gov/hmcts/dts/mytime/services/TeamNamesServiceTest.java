@@ -165,4 +165,25 @@ class TeamNamesServiceTest {
             .as(TEAM_NAMES_MESSAGE)
             .isEmpty();
     }
+
+    @Test
+    void shouldUpdateTeamNames() {
+        when(teamNamesRepository.save(ENTITY)).thenReturn(ENTITY);
+        when(teamNamesRepository.findById(ENTITY.getId())).thenReturn(Optional.of(ENTITY));
+
+        TeamNames result = teamNamesService.updateTeam(TEAM_NAMES);
+        assertThat(result.getTeamName())
+            .as(TEAM_NAMES_MESSAGE)
+            .isEqualTo(TEAM_NAME);
+    }
+
+    @Test
+    void shouldThrowExceptionIfUpdatingNoneExistentTeam() {
+        when(teamNamesRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> teamNamesService.updateTeam(TEAM_NAMES))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage(TEAM_MESSAGE);
+    }
 }

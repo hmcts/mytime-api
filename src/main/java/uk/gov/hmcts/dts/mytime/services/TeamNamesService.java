@@ -9,7 +9,6 @@ import uk.gov.hmcts.dts.mytime.models.TeamNames;
 import uk.gov.hmcts.dts.mytime.repository.TeamNamesRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TeamNamesService {
@@ -31,14 +30,15 @@ public class TeamNamesService {
 
     @Transactional
     public TeamNames updateTeam(TeamNames teamNames) {
+        // Check if team being updated actually exists
+        if (teamNamesRepository.findById(teamNames.getId()).stream()
+            .noneMatch(r -> r.getId().equals(teamNames.getId()))) {
+            throw new NotFoundException(String.format("Team with ID '%s' does not exist", teamNames.getId()));
+        }
+
         uk.gov.hmcts.dts.mytime.entities.TeamNames newTeamNamesEntity =
             new uk.gov.hmcts.dts.mytime.entities.TeamNames(teamNames.getId(), teamNames.getParentTeamId(),
                                                            teamNames.getTeamName());
-
-        teamNamesRepository.findById(teamNames.getId())
-            .map(TeamNames::new)
-            .orElseThrow(() -> new NotFoundException(String.format("Team with ID '%s' does not exist",
-                                                                   teamNames.getId())));
 
         return new TeamNames(teamNamesRepository.save(newTeamNamesEntity));
     }
@@ -79,6 +79,6 @@ public class TeamNamesService {
         return teamNamesRepository.findAll()
             .stream()
             .map(TeamNames::new)
-            .collect(Collectors.toList());
+            .toList();
     }
 }
