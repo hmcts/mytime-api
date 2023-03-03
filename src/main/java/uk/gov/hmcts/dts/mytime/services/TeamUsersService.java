@@ -13,7 +13,6 @@ import uk.gov.hmcts.dts.mytime.repository.TeamUsersRepository;
 import uk.gov.hmcts.dts.mytime.repository.UserRepo;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class TeamUsersService {
@@ -75,6 +74,6 @@ public class TeamUsersService {
         return teamUsersRepository.findAll()
                 .stream()
                 .map(TeamUsers::new)
-                .collect(Collectors.toList());
+                .toList();
     }
 }
