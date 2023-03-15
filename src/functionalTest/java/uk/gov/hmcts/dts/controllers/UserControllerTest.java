@@ -3,26 +3,28 @@ package uk.gov.hmcts.dts.controllers;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.restassured.response.Response;
-import java.time.LocalDateTime;
-import java.util.concurrent.ThreadLocalRandom;
-import static org.assertj.core.api.Assertions.assertThat;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import static org.springframework.http.HttpStatus.CREATED;
-import static org.springframework.http.HttpStatus.OK;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import uk.gov.hmcts.dts.controllers.util.FunctionalTestBase;
 import uk.gov.hmcts.dts.mytime.models.UserModel;
+
+import java.time.LocalDateTime;
+import java.util.concurrent.ThreadLocalRandom;
+
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.springframework.http.HttpStatus.CREATED;
+import static org.springframework.http.HttpStatus.OK;
 
 @ExtendWith(SpringExtension.class)
 @SuppressWarnings("PMD.TooManyMethods")
 class UserControllerTest extends FunctionalTestBase {
 
-    private static final ThreadLocalRandom random = ThreadLocalRandom.current();
-    private static final String PATH = "/user/6";
+    private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
+    private static final String PATH = "/user/";
     private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
-    private static final Integer ID = random.nextInt(1999, 2999);
+    private static final Integer ID = RANDOM.nextInt(1999, 2999);
     private static final String FORENAME = "Functional";
     private static final String SURNAME = "Test";
     private static final LocalDateTime DATE_JOINED = LocalDateTime.now();
@@ -50,12 +52,13 @@ class UserControllerTest extends FunctionalTestBase {
         // create new user
         var response = saveUser();
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
+
         // check saved user is the same
-        UserModel savedUser = response.getBody().as(UserModel.class);
-        assertThat(savedUser.getForeName()).isEqualTo(FORENAME);
+        var returnedUser = response.getBody().as(UserModel.class);
+        assertThat(returnedUser.getForeName()).isEqualTo(FORENAME);
 
         // tidy up
-        response = deleteUser();
+        response = deleteUser(returnedUser);
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
@@ -63,25 +66,22 @@ class UserControllerTest extends FunctionalTestBase {
     void shouldGetUserByID() throws JsonProcessingException {
 
         // save user to db to retrieve
-        //var response = saveUser();
-        //assertThat(response.statusCode()).isEqualTo(CREATED.value());
+        var response = saveUser();
+        assertThat(response.statusCode()).isEqualTo(CREATED.value());
 
         // get saved user by ID
-        var path  = PATH ;
-            //+ "/" + 6;
-            // USER_MODEL.getId();
-        var response = doGetRequest(path);
+        UserModel returnedUser = response.getBody().as(UserModel.class);
+        var path  = PATH + returnedUser.getId();
+        response = doGetRequest(path);
         assertThat(response.statusCode())
             .isEqualTo(OK.value());
 
         // check returned user object
-        UserModel user = response.getBody().as(UserModel.class);
-        assertThat(user.getForeName()).isEqualTo(USER_MODEL.getForeName());
+        assertThat(returnedUser.getForeName()).isEqualTo(USER_MODEL.getForeName());
 
         // tidy up
-        //response = deleteUser();
-        //assertThat(response.statusCode()).isEqualTo(OK.value());
-
+        response = deleteUser(returnedUser);
+        assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     @Test
@@ -94,14 +94,14 @@ class UserControllerTest extends FunctionalTestBase {
         // get returned saved user and update property
         UserModel updatedUser = response.getBody().as(UserModel.class);
         updatedUser.setForeName("Updated Forename");
-        var path = PATH + "/update";
+        var path = PATH + "update";
         var jsonObj = OBJECT_MAPPER.writeValueAsString(updatedUser);
         response = doPatchRequest(path, jsonObj);
         var returnedUser = response.getBody().as(UserModel.class);
         assertThat(returnedUser.getForeName()).isEqualTo(updatedUser.getForeName());
 
         // tidy up
-        response = deleteUser();
+        response = deleteUser(returnedUser);
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
@@ -110,20 +110,23 @@ class UserControllerTest extends FunctionalTestBase {
 
         // save user to db to delete
         var response = saveUser();
+        var savedUser = response.getBody().as(UserModel.class);
         assertThat(response.statusCode()).isEqualTo(CREATED.value());
 
         // tidy up
-        response = deleteUser();
+        response = deleteUser(savedUser);
         assertThat(response.statusCode()).isEqualTo(OK.value());
     }
 
     private Response saveUser() throws JsonProcessingException {
-        return doPutRequest(PATH + "/save",
+        var path = PATH + "save";
+        return doPutRequest(path,
                             OBJECT_MAPPER.writeValueAsString(USER_MODEL));
     }
 
-    private Response deleteUser() throws JsonProcessingException {
-        return doDeleteRequest(PATH + "/delete",
-                               OBJECT_MAPPER.writeValueAsString(USER_MODEL));
+    private Response deleteUser(UserModel savedUser) throws JsonProcessingException {
+        var path = PATH + "delete";
+        return doDeleteRequest(path,
+                               OBJECT_MAPPER.writeValueAsString(savedUser));
     }
 }
