@@ -54,7 +54,7 @@ class TeamUsersTest {
         TeamUsers anotherTeamUsers = TEAM_USERS;
         assertThat(TEAM_USERS.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherTeamUsers.hashCode());
+            .hasSameHashCodeAs(anotherTeamUsers.hashCode());
     }
 
     @Test
@@ -62,7 +62,7 @@ class TeamUsersTest {
         TeamUsers anotherTeamUsers = new TeamUsers(200, TEAM_ID, USER_ID);
         assertThat(TEAM_USERS.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherTeamUsers.hashCode());
+            .hasSameHashCodeAs(anotherTeamUsers.hashCode());
     }
 
     @Test
