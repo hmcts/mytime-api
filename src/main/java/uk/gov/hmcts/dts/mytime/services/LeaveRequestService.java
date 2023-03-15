@@ -10,7 +10,6 @@ import uk.gov.hmcts.dts.mytime.models.LeaveStatus;
 import uk.gov.hmcts.dts.mytime.repository.LeaveRequestRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LeaveRequestService {
@@ -58,6 +57,6 @@ public class LeaveRequestService {
         return leaveRequestRepository.findAllByEmployeeId(employeeId)
             .stream()
             .map(LeaveRequest::new)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

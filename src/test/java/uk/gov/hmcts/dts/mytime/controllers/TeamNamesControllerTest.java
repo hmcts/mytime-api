@@ -116,4 +116,20 @@ class TeamNamesControllerTest {
                 RESULT
             );
     }
+
+    @Test
+    void shouldUpdateTeamName() {
+        when(teamNamesService.updateTeam(TEAM_NAMES)).thenReturn(RESULT);
+
+        assertThat(teamNamesController.updateTeamNames(TEAM_NAMES))
+            .as(ASSERTION_MESSAGE)
+            .extracting(
+                ResponseEntity::getStatusCode,
+                HttpEntity::getBody
+            )
+            .containsExactly(
+                HttpStatus.CREATED,
+                RESULT
+            );
+    }
 }

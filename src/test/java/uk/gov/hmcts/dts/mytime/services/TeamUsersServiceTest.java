@@ -61,6 +61,9 @@ class TeamUsersServiceTest {
     @BeforeAll
     static void setUp() {
         USER_MODEL.setId(USER_ID);
+        USER_ENTITY.setId(USER_ID);
+
+        TEAM_NAMES_ENTITY.setId(TEAM_ID);
 
         TEAM_USERS.setId(ID);
         TEAM_USERS.setTeamId(TEAM_ID);
@@ -78,6 +81,7 @@ class TeamUsersServiceTest {
     void shouldCreateTeamUser() {
         when(userRepo.findById(ENTITY.getUserId())).thenReturn(Optional.of(USER_ENTITY));
         when(teamNamesRepository.findById(TEAM_ID)).thenReturn(Optional.of(TEAM_NAMES_ENTITY));
+        when(teamUsersRepository.findByTeamIdAndUserId(ENTITY.getTeamId(), ENTITY.getUserId())).thenReturn(emptyList());
         when(teamUsersRepository.save(ENTITY)).thenReturn(ENTITY);
 
         TeamUsers result = teamUsersService.createTeamUser(TEAM_USERS);

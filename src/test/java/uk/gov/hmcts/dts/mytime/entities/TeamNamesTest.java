@@ -54,7 +54,7 @@ class TeamNamesTest {
         TeamNames anotherTeamNames = TEAM_NAMES;
         assertThat(TEAM_NAMES.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherTeamNames.hashCode());
+            .hasSameHashCodeAs(anotherTeamNames.hashCode());
     }
 
     @Test
@@ -62,7 +62,7 @@ class TeamNamesTest {
         TeamNames anotherTeamNames = new TeamNames(200, PARENT_TEAM_ID, TEAM_NAME);
         assertThat(TEAM_NAMES.hashCode())
             .as("Hashcode should equal")
-            .isEqualTo(anotherTeamNames.hashCode());
+            .hasSameHashCodeAs(anotherTeamNames.hashCode());
     }
 
     @Test
