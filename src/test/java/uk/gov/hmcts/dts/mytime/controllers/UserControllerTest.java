@@ -1,7 +1,7 @@
 package uk.gov.hmcts.dts.mytime.controllers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
@@ -29,7 +29,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 @WebMvcTest(UserController.class)
 @ContextConfiguration(classes = UserController.class)
-class UserControllerTests {
+class UserControllerTest {
 
     private static final String BASE_URL = "/user";
 
@@ -44,13 +44,18 @@ class UserControllerTests {
     );
 
     private static final UserModel USER_MODEL = new UserModel(USER_ENTITY);
-    ObjectMapper objectMapper = new ObjectMapper();
+    private static final ObjectMapper OBJECT_MAPPER = new ObjectMapper();
 
     @MockBean
     private UserService userService;
 
     @Autowired
     private transient MockMvc mockMvc;
+
+    @BeforeAll
+    static void setup() {
+        OBJECT_MAPPER.findAndRegisterModules();
+    }
 
     // region get by id
 
@@ -63,8 +68,8 @@ class UserControllerTests {
             .andExpect(status().isOk())
             .andReturn();
 
-        objectMapper.registerModule(new JavaTimeModule());
-        UserModel returnedModel = objectMapper.readValue(mvcResult.getResponse().getContentAsString(), UserModel.class);
+        UserModel returnedModel = OBJECT_MAPPER.readValue(mvcResult.getResponse().getContentAsString(),
+                                                          UserModel.class);
         assertThat(returnedModel.getId()).isEqualTo(USER_MODEL.getId());
     }
 
@@ -81,10 +86,7 @@ class UserControllerTests {
 
     @Test
     void shouldSaveAndReturnOk() throws Exception {
-
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String requestJson = objectMapper.writeValueAsString(USER_MODEL);
+        String requestJson = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
 
         MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/save")
                             .content(requestJson)
@@ -96,10 +98,7 @@ class UserControllerTests {
 
     @Test
     void shouldNotSaveAndReturn400() throws Exception {
-
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String requestJson = objectMapper.writeValueAsString("");
+        String requestJson = OBJECT_MAPPER.writeValueAsString("");
 
         MvcResult mvcResult = mockMvc.perform(put(BASE_URL + "/save")
                             .content(requestJson)
@@ -113,10 +112,7 @@ class UserControllerTests {
 
     @Test
     void shouldUpdateAndReturnOk() throws Exception {
-
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String requestJson = objectMapper.writeValueAsString(USER_MODEL);
+        String requestJson = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
 
         MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/update")
                                                   .content(requestJson)
@@ -130,10 +126,7 @@ class UserControllerTests {
 
     @Test
     void shouldNotUpdateAndReturn400() throws Exception {
-
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String requestJson = objectMapper.writeValueAsString("");
+        String requestJson = OBJECT_MAPPER.writeValueAsString("");
 
         MvcResult mvcResult = mockMvc.perform(patch(BASE_URL + "/update")
                                                   .content(requestJson)
@@ -149,10 +142,7 @@ class UserControllerTests {
     // region delete user
     @Test
     void shouldDeleteAndReturnOk() throws Exception {
-
-        objectMapper.registerModule(new JavaTimeModule());
-
-        String requestJson = objectMapper.writeValueAsString(USER_MODEL);
+        String requestJson = OBJECT_MAPPER.writeValueAsString(USER_MODEL);
 
         MvcResult mvcResult = mockMvc.perform(delete(BASE_URL + "/delete")
             .content(requestJson)

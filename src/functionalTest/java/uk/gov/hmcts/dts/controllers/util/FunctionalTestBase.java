@@ -17,6 +17,7 @@ import static org.springframework.http.HttpHeaders.CONTENT_TYPE;
 @ContextConfiguration
 @SpringBootTest(classes = {Application.class},
     webEnvironment = SpringBootTest.WebEnvironment.DEFINED_PORT)
+@SuppressWarnings("PMD.TooManyMethods")
 public class FunctionalTestBase {
     protected static final String CONTENT_TYPE_VALUE = "application/json";
 
@@ -49,6 +50,21 @@ public class FunctionalTestBase {
             .body(body)
             .when()
             .put(path)
+            .thenReturn();
+    }
+
+    protected Response doPatchRequest(final String path, final String body) {
+        return doPatchRequest(path, null, body);
+    }
+
+    protected Response doPatchRequest(final String path, final Map<String, String> additionalHeaders,
+                                      final String body) {
+        return given()
+            .relaxedHTTPSValidation()
+            .headers(getRequestHeaders(additionalHeaders))
+            .body(body)
+            .when()
+            .patch(path)
             .thenReturn();
     }
 
