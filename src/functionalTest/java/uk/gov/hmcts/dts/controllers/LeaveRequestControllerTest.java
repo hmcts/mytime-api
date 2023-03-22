@@ -51,7 +51,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldCreateNewLeaveRequest() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, null,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, APPROVER_ID, TYPE, null,
                                  START_DATE, END_DATE, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -71,7 +71,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldReturnConflictIfCreatingExistingLeaveRequest() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, TYPE, null,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, APPROVER_ID, TYPE, null,
                                               START_DATE, END_DATE_PLUS_1, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -93,7 +93,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldReturnBadRequestIfCreatingLeaveRequestWithInvalidField() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, null, TYPE, null,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, null, TYPE, null,
                                               START_DATE, END_DATE, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -110,7 +110,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldGetExistingLeaveRequest() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
                                               START_DATE, END_DATE_PLUS_2, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -141,7 +141,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
         ExceptionResponse exceptionResponse = response.getBody().as(ExceptionResponse.class);
         assertThat(exceptionResponse.getMessage())
             .as(ERROR_MESSAGE)
-            .isEqualTo("Leave request with ID '99' does not exist");
+            .isEqualTo("Leave Request with ID '99' does not exist");
     }
 
     @Test
@@ -160,7 +160,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldDeleteExistingLeaveRequest() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
                                               START_DATE, END_DATE_PLUS_3, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -188,7 +188,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
         ExceptionResponse exceptionResponse = response.getBody().as(ExceptionResponse.class);
         assertThat(exceptionResponse.getMessage())
             .as(ERROR_MESSAGE)
-            .isEqualTo("Leave request with ID '99' does not exist");
+            .isEqualTo("Leave Request with ID '99' does not exist");
     }
 
     @Test
@@ -207,7 +207,7 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
 
     @Test
     void shouldGetAllLeaveRequestForTheEmployee() throws JsonProcessingException {
-        LeaveRequest input = new LeaveRequest(EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
+        LeaveRequest input = new LeaveRequest(ID, EMPLOYEE_ID, APPROVER_ID, LeaveType.FLEXI, LeaveStatus.APPROVED,
                                               START_DATE, END_DATE_PLUS_4, null, null);
         String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
 
@@ -240,5 +240,42 @@ class LeaveRequestControllerTest extends FunctionalTestBase  {
         assertThat(exceptionResponse.getMessage())
             .as(ERROR_MESSAGE)
             .contains("Employee ID must be greater than zero");
+    }
+
+    @Test
+    void shouldUpdateLeaveRequest() throws JsonProcessingException {
+        LeaveRequest input = new LeaveRequest(null, EMPLOYEE_ID, APPROVER_ID, TYPE, null,
+                                              START_DATE.plusDays(1), END_DATE.plusWeeks(1), null, null);
+        String jsonInput = OBJECT_MAPPER.writeValueAsString(input);
+
+        // Create a new request
+        var response = doPostRequest(PATH, jsonInput);
+        assertThat(response.statusCode())
+            .as(STATUS_MESSAGE)
+            .isEqualTo(CREATED.value());
+
+        LeaveRequest leaveRequest = response.getBody().as(LeaveRequest.class);
+        assertThat(leaveRequest.getStatus())
+            .as(STATUS_MESSAGE)
+            .isEqualTo(LeaveStatus.AWAITING);
+
+        // Update some details for the request
+        leaveRequest.setStatus(LeaveStatus.APPROVED);
+        leaveRequest.setApproverComment("Approved, have a nice holiday!");
+        String jsonUpdateInput = OBJECT_MAPPER.writeValueAsString(leaveRequest);
+
+        // Update the request
+        var updateResponse = doPutRequest(PATH, jsonUpdateInput);
+        assertThat(updateResponse.statusCode())
+            .as(STATUS_MESSAGE)
+            .isEqualTo(CREATED.value());
+
+        LeaveRequest leaveRequestUpdated = updateResponse.getBody().as(LeaveRequest.class);
+        assertThat(leaveRequestUpdated.getStatus())
+            .as(STATUS_MESSAGE)
+            .isEqualTo(LeaveStatus.APPROVED);
+        assertThat(leaveRequestUpdated.getApproverComment())
+            .as(STATUS_MESSAGE)
+            .isEqualTo("Approved, have a nice holiday!");
     }
 }

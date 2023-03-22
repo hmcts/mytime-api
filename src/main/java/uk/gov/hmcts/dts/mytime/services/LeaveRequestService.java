@@ -10,24 +10,26 @@ import uk.gov.hmcts.dts.mytime.models.LeaveStatus;
 import uk.gov.hmcts.dts.mytime.repository.LeaveRequestRepository;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class LeaveRequestService {
+    private static final String LEAVE_REQUEST_MESSAGE = "Leave Request with ID '%s' does not exist";
     @Autowired
     private LeaveRequestRepository leaveRequestRepository;
 
     @Transactional
     public LeaveRequest createLeaveRequest(LeaveRequest leaveRequest) {
         uk.gov.hmcts.dts.mytime.entities.LeaveRequest newLeaveRequestEntity =
-            new uk.gov.hmcts.dts.mytime.entities.LeaveRequest(leaveRequest.getEmployeeId(),
-                                                              leaveRequest.getApproverId(),
-                                                              leaveRequest.getType(),
-                                                              LeaveStatus.AWAITING,
-                                                              leaveRequest.getStartDate(),
-                                                              leaveRequest.getEndDate(),
-                                                              leaveRequest.getRequestComment(),
-                                                              leaveRequest.getApproverComment());
+            new uk.gov.hmcts.dts.mytime.entities.LeaveRequest(
+                leaveRequest.getEmployeeId(),
+                leaveRequest.getApproverId(),
+                leaveRequest.getType(),
+                LeaveStatus.AWAITING,
+                leaveRequest.getStartDate(),
+                leaveRequest.getEndDate(),
+                leaveRequest.getRequestComment(),
+                leaveRequest.getApproverComment()
+            );
 
         if (leaveRequestRepository.findAllByEmployeeId(leaveRequest.getEmployeeId()).stream()
             .anyMatch(r -> r.equals(newLeaveRequestEntity))) {
@@ -37,10 +39,34 @@ public class LeaveRequestService {
         return new LeaveRequest(leaveRequestRepository.save(newLeaveRequestEntity));
     }
 
+    @Transactional
+    public LeaveRequest updateLeaveRequest(LeaveRequest leaveRequest) {
+        // Check if Leave Request being updated actually exists
+        if (leaveRequestRepository.findById(leaveRequest.getId()).stream()
+            .noneMatch(r -> r.getId().equals(leaveRequest.getId()))) {
+            throw new NotFoundException(String.format(LEAVE_REQUEST_MESSAGE, leaveRequest.getId()));
+        }
+
+        uk.gov.hmcts.dts.mytime.entities.LeaveRequest newLeaveRequestEntity =
+            new uk.gov.hmcts.dts.mytime.entities.LeaveRequest(
+                leaveRequest.getId(),
+                leaveRequest.getEmployeeId(),
+                leaveRequest.getApproverId(),
+                leaveRequest.getType(),
+                leaveRequest.getStatus(),
+                leaveRequest.getStartDate(),
+                leaveRequest.getEndDate(),
+                leaveRequest.getRequestComment(),
+                leaveRequest.getApproverComment()
+            );
+
+        return new LeaveRequest(leaveRequestRepository.save(newLeaveRequestEntity));
+    }
+
     public LeaveRequest getLeaveRequestById(Integer id) {
         return leaveRequestRepository.findById(id)
             .map(LeaveRequest::new)
-            .orElseThrow(() -> new NotFoundException(String.format("Leave request with ID '%s' does not exist", id)));
+            .orElseThrow(() -> new NotFoundException(String.format(LEAVE_REQUEST_MESSAGE, id)));
     }
 
     public void deleteLeaveRequestById(Integer id) {
@@ -48,7 +74,7 @@ public class LeaveRequestService {
             .ifPresentOrElse(
                 o -> leaveRequestRepository.deleteById(id),
                 () -> {
-                    throw new NotFoundException(String.format("Leave request with ID '%s' does not exist", id));
+                    throw new NotFoundException(String.format(LEAVE_REQUEST_MESSAGE, id));
                 });
     }
 
@@ -58,6 +84,6 @@ public class LeaveRequestService {
         return leaveRequestRepository.findAllByEmployeeId(employeeId)
             .stream()
             .map(LeaveRequest::new)
-            .collect(Collectors.toList());
+            .toList();
     }
 }

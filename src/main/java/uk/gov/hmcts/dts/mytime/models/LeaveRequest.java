@@ -14,6 +14,7 @@ import javax.validation.constraints.NotNull;
 @NoArgsConstructor
 @AllArgsConstructor
 public class LeaveRequest {
+    Integer id;
     @NotNull(message = "Employee ID is required")
     private Integer employeeId;
 
@@ -38,6 +39,7 @@ public class LeaveRequest {
     private String approverComment;
 
     public LeaveRequest(uk.gov.hmcts.dts.mytime.entities.LeaveRequest entity) {
+        this.id = entity.getId();
         this.employeeId = entity.getEmployeeId();
         this.approverId = entity.getApproverId();
         this.type = entity.getType();
