@@ -96,4 +96,19 @@ class LeaveRequestControllerTest {
                 List.of(RESULT)
             );
     }
+
+    @Test
+    void shouldUpdateLeaveRequest() {
+        when(leaveRequestService.updateLeaveRequest(LEAVE_REQUEST)).thenReturn(RESULT);
+
+        assertThat(leaveRequestController.updateLeaveRequest(LEAVE_REQUEST))
+            .as(ASSERTION_MESSAGE)
+            .extracting(
+                r -> r.getStatusCode(),
+                r -> r.getBody())
+            .containsExactly(
+                HttpStatus.CREATED,
+                RESULT
+            );
+    }
 }

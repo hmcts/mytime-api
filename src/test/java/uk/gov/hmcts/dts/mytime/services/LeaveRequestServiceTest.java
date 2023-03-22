@@ -23,6 +23,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+@SuppressWarnings("PMD.TooManyMethods")
 class LeaveRequestServiceTest {
     private static final Integer ID = 123;
     private static final Integer ID2 = 124;
@@ -30,7 +31,6 @@ class LeaveRequestServiceTest {
     private static final String LEAVE_REQUEST_MESSAGE = "Leave request does not match";
     private static final String STATUS_MESSAGE = "Status does not match";
     private static final String EXCEPTION_MESSAGE = "Exception does not match";
-
     private static final LeaveRequest INPUT_REQUEST = new LeaveRequest();
     private static final uk.gov.hmcts.dts.mytime.entities.LeaveRequest ENTITY =
         new uk.gov.hmcts.dts.mytime.entities.LeaveRequest();
@@ -45,7 +45,9 @@ class LeaveRequestServiceTest {
 
     @BeforeAll
     static void setUp() {
+        INPUT_REQUEST.setId(ID);
         INPUT_REQUEST.setEmployeeId(EMPLOYEE_ID);
+        INPUT_REQUEST.setStatus(LeaveStatus.AWAITING);
 
         ENTITY.setEmployeeId(EMPLOYEE_ID);
         ENTITY.setStatus(LeaveStatus.AWAITING);
@@ -127,7 +129,7 @@ class LeaveRequestServiceTest {
         assertThatThrownBy(() -> leaveRequestService.getLeaveRequestById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Leave request with ID '123' does not exist");
+            .hasMessage("Leave Request with ID '123' does not exist");
     }
 
     @Test
@@ -145,7 +147,7 @@ class LeaveRequestServiceTest {
         assertThatThrownBy(() -> leaveRequestService.deleteLeaveRequestById(ID))
             .as(EXCEPTION_MESSAGE)
             .isInstanceOf(NotFoundException.class)
-            .hasMessage("Leave request with ID '123' does not exist");
+            .hasMessage("Leave Request with ID '123' does not exist");
     }
 
     @Test
@@ -165,5 +167,26 @@ class LeaveRequestServiceTest {
         assertThat(leaveRequestService.getAllLeaveRequestsByEmployeeId(EMPLOYEE_ID))
             .as(LEAVE_REQUEST_MESSAGE)
             .isEmpty();
+    }
+
+    @Test
+    void shouldUpdateLeaveRequest() {
+        when(leaveRequestRepository.findById(ID)).thenReturn(Optional.of(ENTITY));
+        when(leaveRequestRepository.save(ENTITY)).thenReturn(ENTITY);
+
+        LeaveRequest result = leaveRequestService.updateLeaveRequest(INPUT_REQUEST);
+        assertThat(result.getEmployeeId())
+            .as(LEAVE_REQUEST_MESSAGE)
+            .isEqualTo(EMPLOYEE_ID);
+    }
+
+    @Test
+    void shouldThrowExceptionIfUpdateLeaveRequestNotFound() {
+        when(leaveRequestRepository.findById(ID)).thenReturn(Optional.empty());
+
+        assertThatThrownBy(() -> leaveRequestService.updateLeaveRequest(INPUT_REQUEST))
+            .as(EXCEPTION_MESSAGE)
+            .isInstanceOf(NotFoundException.class)
+            .hasMessage("Leave Request with ID '123' does not exist");
     }
 }

@@ -29,7 +29,7 @@ public class LeaveRequest {
     @SequenceGenerator(name = "seq-gen", sequenceName = "leave_request_id_seq", allocationSize = 1)
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "seq-gen")
     @Column(insertable = false, updatable = false, nullable = false)
-    private int id;
+    private Integer id;
 
     @Column(nullable = false)
     private Integer employeeId;

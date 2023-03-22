@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,12 @@ public class LeaveRequestController {
     public ResponseEntity<LeaveRequest> createLeaveRequest(@Valid @RequestBody LeaveRequest leaveRequest) {
         return created(URI.create(StringUtils.EMPTY))
             .body(leaveRequestService.createLeaveRequest(leaveRequest));
+    }
+
+    @PutMapping(produces = APPLICATION_JSON_VALUE)
+    public ResponseEntity<LeaveRequest> updateLeaveRequest(@Valid @RequestBody LeaveRequest leaveRequest) {
+        return created(URI.create(StringUtils.EMPTY))
+            .body(leaveRequestService.updateLeaveRequest(leaveRequest));
     }
 
     @GetMapping("/{id}")
