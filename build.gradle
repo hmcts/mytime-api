@@ -4,11 +4,11 @@ plugins {
   id 'pmd'
   id 'jacoco'
   id 'io.spring.dependency-management' version '1.1.0'
-  id 'org.springframework.boot' version '2.7.10'
+  id 'org.springframework.boot' version '2.7.12'
   id 'org.owasp.dependencycheck' version '8.2.1'
   id 'com.github.ben-manes.versions' version '0.46.0'
   id 'org.sonarqube' version '4.0.0.2929'
-  id 'org.flywaydb.flyway' version '9.16.3'
+  id 'org.flywaydb.flyway' version '9.19.1'
   id 'io.freefair.lombok' version '8.0.1'
 }
 
@@ -105,12 +105,12 @@ task smoke(type: Test) {
 
 checkstyle {
   maxWarnings = 0
-  toolVersion = '10.9.3'
+  toolVersion = '10.11.0'
   getConfigDirectory().set(new File(rootDir, 'config/checkstyle'))
 }
 
 pmd {
-  toolVersion = "6.54.0"
+  toolVersion = "6.55.0"
   sourceSets = [sourceSets.main, sourceSets.test, sourceSets.functionalTest, sourceSets.integrationTest, sourceSets.smokeTest]
   reportsDir = file("$project.buildDir/reports/pmd")
   // https://github.com/pmd/pmd/issues/876
@@ -194,15 +194,14 @@ dependencies {
   implementation group: 'org.postgresql', name: 'postgresql', version: '42.6.0'
   implementation group: 'org.flywaydb', name: 'flyway-core'
   implementation group: 'org.springdoc', name: 'springdoc-openapi-ui', version: '1.7.0'
-  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.5'
 
   implementation group: 'com.github.hmcts.java-logging', name: 'logging', version: '6.0.1'
 
   // temporary work around for dependency check
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.14.2'
-  implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.14.2', ext: 'pom'
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.14.2'
-  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.14.2'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-databind', version: '2.15.2'
+  implementation group: 'com.fasterxml.jackson', name: 'jackson-bom', version: '2.15.2', ext: 'pom'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-core', version: '2.15.2'
+  implementation group: 'com.fasterxml.jackson.core', name: 'jackson-annotations', version: '2.15.2'
 
   implementation group: 'org.apache.logging.log4j', name: 'log4j-api', version: log4JVersion
   implementation group: 'org.apache.logging.log4j', name: 'log4j-to-slf4j', version: log4JVersion
@@ -215,17 +214,17 @@ dependencies {
   implementation group: 'org.flywaydb', name: 'flyway-core'
   implementation 'org.projectlombok:lombok:1.18.26'
 
-  testImplementation(platform('org.junit:junit-bom:5.9.2'))
+  testImplementation(platform('org.junit:junit-bom:5.9.3'))
   testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine'
   testImplementation group: 'org.springframework.boot', name: 'spring-boot-starter-test', {
     exclude group: 'junit', module: 'junit'
     exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
   }
 
-  integrationTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.18.0'
-  integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.18.0'
-  functionalTestImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.18.0'
-  functionalTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.18.0'
+  integrationTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.18.3'
+  integrationTestImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.18.3'
+  functionalTestImplementation group: 'org.testcontainers', name: 'postgresql', version: '1.18.3'
+  functionalTestImplementation group: 'org.testcontainers', name: 'junit-jupiter', version: '1.18.3'
 }
 
 mainClassName = 'uk.gov.hmcts.dts.mytime.Application'
@@ -246,7 +245,7 @@ dependencyManagement {
       entry 'guava'
     }
     //CVE-2021-29425
-    dependencySet(group: 'commons-io', version: '2.11.0') {
+    dependencySet(group: 'commons-io', version: '2.12.0') {
       entry 'commons-io'
     }
     // solves CVE-2022-25857
